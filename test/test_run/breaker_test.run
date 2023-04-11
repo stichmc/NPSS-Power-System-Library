@@ -39,7 +39,8 @@ increased power to see how variables change
 MODELNAME = "Breaker Test";
 
 // select model
-#include "breaker_test.mdl"
+#include "test_model/breaker_test.mdl"
+#include "test_utils/TestingUtils.fnc"
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
 solverSequence = { "ACS", "DCS", "ACBreaker", "DCBreaker" };
@@ -56,9 +57,33 @@ ACBreaker.Ireal = 1100;
 ACBreaker.Iimag = 0;
 DCBreaker.Ireal = 1100;
 DCBreaker.Iimag = 0;
+real errTol = 0.000001;
 
 run();
 printOutput();
+
+// ACBreaker Tests
+real effCalc = ((ACBreaker.EP_I.S.r - ACBreaker.EP_I.I.mag**2* ACBreaker.Z.mag)/ ACBreaker.EP_I.S.r);
+testParameterDifference("ACBreaker","Efficiency",errTol,ACBreaker.eff,effCalc);
+
+real measCalc = (ACBreaker.EP_I.VLN.r - (ACBreaker.EP_O.VLN.r));
+testParameterDifference("ACBreaker","dV_meas",errTol,ACBreaker.dV.r,measCalc);
+
+real realCurrentDifference = (ACBreaker.EP_I.I.r - ACBreaker.EP_O.I.r);
+real imagCurrentDifference = (ACBreaker.EP_I.I.j - ACBreaker.EP_O.I.j);
+testCurrentDifference("ACBreaker",errTol,realCurrentDifference,imagCurrentDifference);
+
+// DCBreaker Tests
+effCalc = ((DCBreaker.EP_I.S.r - DCBreaker.EP_I.I.mag**2* DCBreaker.Z.mag)/ DCBreaker.EP_I.S.r);
+testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
+
+measCalc = (DCBreaker.EP_I.VLN.r - (DCBreaker.EP_O.VLN.r));
+testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker.dV.r,measCalc);
+
+realCurrentDifference = (DCBreaker.EP_I.I.r - DCBreaker.EP_O.I.r);
+imagCurrentDifference = (DCBreaker.EP_I.I.j - DCBreaker.EP_O.I.j);
+testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);
+
 
 cout << "--- Off Design ---" << endl;
 setOption("switchDes","OFFDESIGN");
@@ -76,6 +101,28 @@ autoSolverSetup();
 // Run off-design, same inputs
 run();
 printOutput();
+
+// ACBreaker Tests
+effCalc = ((ACBreaker.EP_I.S.r - ACBreaker.EP_I.I.mag**2* ACBreaker.Z.mag)/ ACBreaker.EP_I.S.r);
+testParameterDifference("ACBreaker","Efficiency",errTol,ACBreaker.eff,effCalc);
+
+measCalc = (ACBreaker.EP_I.VLN.r - (ACBreaker.EP_O.VLN.r));
+testParameterDifference("ACBreaker","dV_meas",errTol,ACBreaker.dV.r,measCalc);
+
+realCurrentDifference = (ACBreaker.EP_I.I.r - ACBreaker.EP_O.I.r);
+imagCurrentDifference = (ACBreaker.EP_I.I.j - ACBreaker.EP_O.I.j);
+testCurrentDifference("ACBreaker",errTol,realCurrentDifference,imagCurrentDifference);
+
+// DCBreaker Tests
+effCalc = ((DCBreaker.EP_I.S.r - DCBreaker.EP_I.I.mag**2* DCBreaker.Z.mag)/ DCBreaker.EP_I.S.r);
+testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
+
+measCalc = (DCBreaker.EP_I.VLN.r - (DCBreaker.EP_O.VLN.r));
+testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker.dV.r,measCalc);
+
+realCurrentDifference = (DCBreaker.EP_I.I.r - DCBreaker.EP_O.I.r);
+imagCurrentDifference = (DCBreaker.EP_I.I.j - DCBreaker.EP_O.I.j);
+testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);
 
 // Run off-design, increase power by increasing voltage drop (decrease voltage on output side of Breaker.
 // ACS.Vreal *= 0.9999;
