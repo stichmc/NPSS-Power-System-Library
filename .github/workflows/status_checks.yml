@@ -12,7 +12,7 @@ name: Status Check
 on: 
   push:
     paths:
-      -'.github/workflows'
+      - '.github/workflows'
 jobs:
   YAMLCheck:
     name: Yaml Modification Check
