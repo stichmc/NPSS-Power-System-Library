@@ -2,7 +2,7 @@
 
 ## NASA - Glenn Research Center
 
-## Introduction
+## Introducti
 
 This repository contains a power system library (PSL) for the Numerical
 Propulsion System Simulation (NPSS) software framework.
