@@ -1,0 +1,29 @@
+#-----------------------------------------------------------------------------
+#|                                                                           |
+#| File Name:     stats_checks.yml                                           |
+#| Author(s):     Michael Stich                                              |
+#| Date(s):       March 2023                                                 |
+#|                                                                           |
+#| Description:   YAML script that checks if the YAML file being pushed was  |
+#|                modified                                                   |
+#|                                                                           |
+#-----------------------------------------------------------------------------
+name: Status Check
+on: [push,pull_request]
+  branches: master
+jobs:
+  YAMLCheck:
+    name: Yaml Modification Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if workflows file was changed
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const filesChanged = context.payload.commits[0].added.concat(context.payload.commits[0].modified);
+            core.setOutput('filesChanged', filesChanged.includes('.github/workflows'));
+      - name: Fail if YAML was modified
+        if: ${{ steps.check-file.outputs.filesChanged == 'true' }}
+        run: |
+          echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+          exit 1
