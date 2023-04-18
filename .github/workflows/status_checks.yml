@@ -9,7 +9,7 @@
 #|                                                                           |
 #-----------------------------------------------------------------------------
 name: Status Check
-on: push
+on: pull_request
 jobs:
   YAMLCheck:
     name: Yaml Modification Check

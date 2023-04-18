@@ -9,7 +9,7 @@
 #|                                                                           |
 #-----------------------------------------------------------------------------
 name: NPSS Tests
-on: [push,pull_request]
+on: push
 jobs:
   NPSS_Scan:
     name: NPSS Error/Warning Scan
