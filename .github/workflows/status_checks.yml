@@ -9,6 +9,7 @@
 #|                                                                           |
 #-----------------------------------------------------------------------------
 name: Status Check
+on: push
 jobs:
   YAMLCheck:
     name: Yaml Modification Check
