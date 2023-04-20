@@ -21,5 +21,15 @@ jobs:
 
       - name: Check for YAML File Changes       
         run: |
-          git diff HEAD^ HEAD
-            # echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+          git diff --name-only HEAD^ HEAD
+          git diff --name-only HEAD^ HEAD &gt; files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file == .github/* ]]; then
+              echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+              break
+            else
+              echo "Good!"
+            f1
+          done &lt; files.txt
