@@ -34,27 +34,27 @@ jobs:
           exit 0
         fi
 
-    NPSS_Output:
-    needs: YAMLCheck
-    if: ${{ needs.YAMLCheck.result == 'success' }}
-    
-    name: NPSS Run Console Output
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v3
-      - run: >
-          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat 2> ..\..\..\..\currentOutput.txt";
+  NPSS_Output:
+  needs: YAMLCheck
+  if: ${{ needs.YAMLCheck.result == 'success' }}
+  
+  name: NPSS Run Console Output
+  runs-on: self-hosted
+  steps:
+    - uses: actions/checkout@v3
+    - run: >
+        cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat 2> ..\..\..\..\currentOutput.txt";
 
-          $content = Get-Content ..\..\..\..\currentOutput.txt;
-          if ($content) 
-          {
-            Write-Host "The NPSS Code Pushed Produced The Following Console Output:"; 
-            Get-Content ..\..\..\..\currentOutput.txt;
-            Clear-Content ..\..\..\..\currentOutput.txt;
-            exit 0
-          }
-          else
-          {
-            Write-Host "The NPSS Code Pushed Did Not Produce Any Output To The Console";
-            exit 0
-          }
+        $content = Get-Content ..\..\..\..\currentOutput.txt;
+        if ($content) 
+        {
+          Write-Host "The NPSS Code Pushed Produced The Following Console Output:"; 
+          Get-Content ..\..\..\..\currentOutput.txt;
+          Clear-Content ..\..\..\..\currentOutput.txt;
+          exit 0
+        }
+        else
+        {
+          Write-Host "The NPSS Code Pushed Did Not Produce Any Output To The Console";
+          exit 0
+        }
