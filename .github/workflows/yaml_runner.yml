@@ -33,6 +33,3 @@ jobs:
           echo "No Files Were Modified in ./github/** Safe to Proceed With Runners"
           exit 0
         fi
-
-  NPSS_Output:
-    needs: YAMLCheck
