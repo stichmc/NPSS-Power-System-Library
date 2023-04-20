@@ -11,8 +11,8 @@
 name: Status Check
 on: 
   pull_request:
-    paths:
-      - .github/**
+    paths-ignore:
+      - '.github/**'
 
 jobs:
   YAMLCheck:
