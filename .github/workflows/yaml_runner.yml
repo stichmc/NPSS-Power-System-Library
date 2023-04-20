@@ -8,9 +8,10 @@
 #|                modified                                                   |
 #|                                                                           |
 #-----------------------------------------------------------------------------
-name: Status Check On Push
+name: Status Check
 
-on: [push]
+on: [push,pull_request]
+
 jobs:
   YAMLCheck:
     runs-on: ubuntu-latest
@@ -33,8 +34,46 @@ jobs:
           echo "No Files Were Modified in ./github/** Safe to Proceed With Runners"
           exit 0
         fi
+  NPSS_Scan:
+    name: NPSS Error/Warning Scan
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - run: >
+          Clear-Content ..\..\..\..\currentOutput.txt;
+          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat 1>NUL 2>..\..\..\..\currentOutput.txt";
+
+          $content = Get-Content ..\..\..\..\currentOutput.txt;
+          if ($content) 
+          {
+            Write-Host "The NPSS Code Pushed Contains The Following Errors/Warnings:"; 
+            Get-Content ..\..\..\..\currentOutput.txt;
+            $dateTime = Get-Date; 
+            $dateTimeString = $dateTime.ToString("yyyy-MM-dd_HH-mm-ss");
+            New-Item -ItemType File -Path "..\..\..\..\errorOutputLogs\$dateTimeString.txt" | Out-Null;
+            Set-Content ..\..\..\..\errorOutputLogs\$dateTimeString.txt $content;
+            Clear-Content ..\..\..\..\currentOutput.txt;
+            exit 1
+          }
+
+  NPSS_Tester:
+    name: NPSS Unit Tester
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - run: >
+          cmd /c "..\..\..\..\setup-npss.bat && testnpss.bat 1>NUL 2>..\..\..\..\currentOutput.txt";
+
+          $content = Get-Content ..\..\..\..\currentOutput.txt;
+          if ($content) 
+          {
+            Write-Host "The NPSS Code Pushed Contains The Following Unit Test Errors/Warnings:"; 
+            Get-Content ..\..\..\..\currentOutput.txt;
+            Clear-Content ..\..\..\..\currentOutput.txt;
+            exit 1
+          }
+
   NPSS_Output:
-    needs: YAMLCheck
     name: NPSS Run Console Output
     runs-on: self-hosted
     steps:

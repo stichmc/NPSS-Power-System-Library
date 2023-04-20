@@ -8,7 +8,7 @@
 #|                modified                                                   |
 #|                                                                           |
 #-----------------------------------------------------------------------------
-name: Status Check On Pull
+name: Bruh
 
 on: [pull_request]
 jobs:
