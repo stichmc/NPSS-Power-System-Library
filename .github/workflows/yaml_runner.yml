@@ -10,10 +10,10 @@
 #-----------------------------------------------------------------------------
 name: Status Check
 
-on: [pull_request]
+on: [push]
 
 jobs:
-  build:
+  YAMLCheck:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,22 +26,8 @@ jobs:
     - name: Compare .github Folders
       id: compare
       run: |
-        git diff --quiet HEAD^ HEAD .github || exit 1
-
-    - name: Set Pull Request Status
-      if: always()
-      uses: actions/github-script@v4
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const conclusion = ${{ job.status }};
-          const pullRequest = context.payload.pull_request;
-          const octokit = new github.GitHub(token);
-          octokit.repos.createCommitStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: pullRequest.head.sha,
-            state: conclusion,
-            context: 'github-folder-check',
-            description: conclusion === 'success' ? 'YAMl file not modified, good to merge!' : 'The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent.',
-          });
+        diff=$(git diff --name-only HEAD^ HEAD .github)
+        if [ -n "$diff" ]; then
+          echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+          exit 1
+        fi
