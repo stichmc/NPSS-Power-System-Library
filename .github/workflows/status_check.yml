@@ -12,8 +12,9 @@ name: Status Check
 
 on:
   pull_request:
-    paths:
-      - '.github/**'
+    branches:
+      - main
+      - '.github/**
 
 jobs:
   YAMLCheck:
