@@ -24,7 +24,7 @@ jobs:
 
       - name: Check for YAML File Changes       
         run: |
-          if ! git diff --quiet HEAD@{1} HEAD .github/workflows; then
+          if ! git diff --quiet --no-renames HEAD@{1} HEAD .github/workflows; then
             echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
             exit 1
           else
