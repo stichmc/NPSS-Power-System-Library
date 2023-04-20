@@ -11,7 +11,6 @@
 name: Status Check
 
 on: [push]
-
 jobs:
   YAMLCheck:
     runs-on: ubuntu-latest
@@ -28,6 +27,9 @@ jobs:
       run: |
         diff=$(git diff --name-only HEAD^ HEAD .github)
         if [ -n "$diff" ]; then
-          echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+          echo "::error::The ./github/** directory was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
           exit 1
+        else
+          echo "No Files Were Modified in ./github/** Safe to Proceed With Runners"
+          exit 0
         fi
