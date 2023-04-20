@@ -35,8 +35,7 @@ jobs:
         fi
 
   NPSS_Output:
-  needs: YAMLCheck
-  if: ${{ needs.YAMLCheck.result == 'success' }}
+    needs: YAMLCheck
   
   name: NPSS Run Console Output
   runs-on: self-hosted
