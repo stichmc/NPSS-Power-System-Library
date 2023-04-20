@@ -11,8 +11,8 @@
 name: Status Check
 on: 
   pull_request:
-    paths-ignore:
-      - '.github/**'
+    paths:
+      - .github/**
 
 jobs:
   YAMLCheck:
@@ -26,7 +26,7 @@ jobs:
         run: |
           if ! git diff --quiet HEAD@{1} HEAD .github/workflows; then
             echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
-            exit 0
-          else
             exit 1
+          else
+            exit 0
           fi
