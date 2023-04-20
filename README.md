@@ -15,7 +15,6 @@ Several examples are included in the library to demonstrate the use of the
 various components, and how they may be connected to an NPSS gas-turbine engine
 model.
 
-## Usage
 
 If you have your NPSS environment set up, you can run a model like so:
 
