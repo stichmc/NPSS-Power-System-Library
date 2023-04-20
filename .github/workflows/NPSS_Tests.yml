@@ -7,7 +7,7 @@
 #| Description:   YAML script that connects to the NPSS shell server and     |
 #|                executes command arguments to test the proposed NPSS code  |
 #|                                                                           |
-#-----------------------------------------------------------------------------
+#----------------------------------------------------------------------
 name: NPSS Runner
 on: push
 jobs:
