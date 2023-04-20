@@ -21,8 +21,8 @@ jobs:
 
       - name: Check for YAML File Changes       
         run: |
-          git diff --name-only HEAD^ HEAD
-          git diff --name-only HEAD^ HEAD &gt; files.txt
+          git diff --name-only HEAD
+          git diff --name-only HEAD &gt; files.txt
           while IFS= read -r file
           do
             echo $file
