@@ -1,14 +1,15 @@
 #-----------------------------------------------------------------------------
 #|                                                                           |
-#| File Name:     stats_check.yml                                            |
+#| File Name:     YAML_Scan_And_NPSS_Runner.yml                              |
 #| Author(s):     Michael Stich                                              |
-#| Date(s):       March 2023                                                 |
+#| Date(s):       April 2023                                                 |
 #|                                                                           |
-#| Description:   YAML script that checks if the YAML file being pushed was  |
-#|                modified                                                   |
+#| Description:   YAML script that checks if the YAML file proposed is       |
+#|                modified, if the YAML isn't modified then the script       |
+#|                runs the various NPSS jobs                                 |
 #|                                                                           |
 #-----------------------------------------------------------------------------
-name: Status Check
+name: YAML Scan & NPSS Runner
 
 on: [push,pull_request]
 
@@ -83,18 +84,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: >
-          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat 2> ..\..\..\..\currentOutput.txt";
-
-          $content = Get-Content ..\..\..\..\currentOutput.txt;
-          if ($content) 
-          {
-            Write-Host "The NPSS Code Pushed Produced The Following Console Output:"; 
-            Get-Content ..\..\..\..\currentOutput.txt;
-            Clear-Content ..\..\..\..\currentOutput.txt;
-            exit 0
-          }
-          else
-          {
-            Write-Host "The NPSS Code Pushed Did Not Produce Any Output To The Console";
-            exit 0
-          }
+          Write-Host "The NPSS Code Pushed Produced The Following Console Output:";
+          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat";
