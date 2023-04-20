@@ -9,10 +9,11 @@
 #|                                                                           |
 #-----------------------------------------------------------------------------
 name: Status Check
-on: 
+
+on:
   pull_request:
     paths:
-      - .github/**
+      - '.github/**'
 
 jobs:
   YAMLCheck:
