@@ -17,7 +17,7 @@ model.
 
 ## Usage
 
-If you have your NPSS environment set up, you can run a model like so:
+If you have your NPSS environment set ke so:
 
 ```bat
 runnpss-psl run\[file_name].run
