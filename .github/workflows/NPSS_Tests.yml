@@ -56,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: >
-          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat > ..\..\..\..\currentOutput.txt";
+          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat 2> ..\..\..\..\currentOutput.txt";
 
           $content = Get-Content ..\..\..\..\currentOutput.txt;
           if ($content) 
