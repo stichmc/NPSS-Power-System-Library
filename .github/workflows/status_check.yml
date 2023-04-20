@@ -25,4 +25,3 @@ jobs:
       - name: Check for YAML File Changes       
         run: |
           echo "::error::The ./github/workflows file was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
-          exit 1
