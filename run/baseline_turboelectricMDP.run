@@ -258,5 +258,8 @@ TOC.solver.diagnosticFile = "output/TOCSolverOutput";
 TOC.solver.debugLevel = "ITERATION_DETAILS";
 
 run();
+printPride();
+printPrideTKO();
+printPrideTOC();
 
 page.display();  // output data to out file

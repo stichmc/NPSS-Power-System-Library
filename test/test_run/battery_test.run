@@ -28,10 +28,6 @@ fine, imprisonment, or both.
 #include "npssel.view"
 #include "npssel_runtime.view"
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
-
 MODELNAME = "battery_test";
 
 //model file
@@ -43,6 +39,7 @@ On design
 ************************/
 setOption("switchDes","DESIGN"); 
 autoSolverSetup();
+//solver.removeIndependent( "CLoad.ind_Vimag" );
 //solver.solutionMode = "ONE_PASS";
 //solver.switchUBC = "ON";
 
@@ -50,7 +47,9 @@ solver.maxIterations=5000;
 solver.maxJacobians=5000;
 solver.defaultPerturbation = 0.0001; // tell the solver not to perturb so far when calcing jacobian. default: 0.001
 //solver.defaultDxLimit = 0.03;
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << solverSequence << endl;
+cout << endl << "Dependents:" << endl << solver.dependentNames << endl << 
+"Independents:" << endl << solver.independentNames << endl;
 
 // Constant power load 14 W for Case 0 and 1
 run();

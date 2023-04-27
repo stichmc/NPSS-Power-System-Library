@@ -28,9 +28,9 @@ ElectricAssembly allElectric {
     length = 1; // [meter]
   }
 
-  DC_DC_Converter Converter {
+  DC_DC_Converter DC_DC_Converter {
     // #include <InverterRectifierMap.int>
-    Voltage       = 1000; // [volts]
+    V             = 1000; // [volts]
     K             = 2.0;  // voltage ratio (V_in * K = V_out)
     effDes        = 0.93; // [93 %]
     SpecificPower = 9;    // [kW / kg]
@@ -48,10 +48,15 @@ ElectricAssembly allElectric {
   }
 
   // Source -> A1 (cable) -> Converter -> A2 (cable) -> Load
-  linkPortI("Source.EP_O", "A1.EP_I");        // Source -> A1 (cable)
-  linkPortI("A1.EP_O", "Converter.EP_I"); // A1 (cable) -> Converter
-  linkPortI("Converter.EP_O", "A2.EP_I");  // Converter -> A2 (cable)
-  linkPortI("A2.EP_O", "Load.EP_I");      // A2 (cable) -> Load
-  propagateEpsSolverListAndPowerTypes();
+  linkPorts("Source.EP_O", "A1.EP_I", "PORT1");          //     Source -> A1 (cable)
+  linkPorts("A1.EP_O", "DC_DC_Converter.EP_I", "PORT2"); // A1 (cable) -> Converter
+  linkPorts("DC_DC_Converter.EP_O", "A2.EP_I", "PORT3"); //  Converter -> A2 (cable)
+  linkPorts("A2.EP_O", "Load.EP_I", "PORT4");            // A2 (cable) -> Load
+  setOption("ElectricPowerType", "DC");
+  // propagateEpsSolverListAndPowerTypes();
 
+  solverSequence = {
+      "A1", "A2",                         // Power transmission components
+      "DC_DC_Converter", "Source", "Load" // Power components
+  };
 }

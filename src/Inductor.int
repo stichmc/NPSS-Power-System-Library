@@ -65,9 +65,9 @@ no sizing logic included in this component.";
   //------------------------------
   
   real L;	
-  ComplexNumber Z;
-  ComplexNumber dV;
-  ComplexNumber I;
+  Complex dV;
+  Complex Z;
+  Complex I;
   
   //----------------------------------------------------------
   // ****** SETUP PORTS, FLOW STATIONS, SOCKETS, TABLES ******
@@ -80,21 +80,18 @@ no sizing logic included in this component.";
   ElectricOutputPort EP_O {
     description = "Electric output port.";
   }
-  string EPortRef;
   
   void calculate() {
     
     // calculate current from voltage drop
-    dV.copy( "EP_I.V" );
-    dV.minus( "EP_O.V" );	
-    Z.setrj( 0., 2.*PI*EP_I.frequency*L );
-    I.copy( "dV" );
-    I.div( "Z" );
+    dV = EP_I.V - EP_O.V;
+    Z.set(0., 2*PI * EP_I.frequency * L);
+    I = dV / Z;
 
     // set the conditions in the ports
-    EP_O.setIVRMS( I.rRMS, I.jRMS, EP_O.V.rRMS, EP_O.V.jRMS ); 	
-    EP_I.setIVRMS( I.rRMS, I.jRMS, EP_I.V.rRMS, EP_I.V.jRMS ); 	
-    EP_O.frequency=EP_I.frequency;
+    EP_O.setIVRMS(I, EP_O.V); 	
+    EP_I.setIVRMS(I, EP_I.V); 	
+    EP_O.frequency = EP_I.frequency;
   }
 }
 #endif

@@ -334,7 +334,8 @@ this component, see MotorGeneratorMap.int";
   void calculate() {
     
     // Compute the output voltage value
-    ComplexNumber Vo;
+    Complex Vo;
+    Complex Loss;
     if (EP_O.ElectricPowerType == "DC") {
       Vo.setMagPhase( Vrms, 0 );
     }
@@ -353,20 +354,20 @@ this component, see MotorGeneratorMap.int";
      */
 
     pf = cos(EP_O.S.phase);
-
+    
     if (switchDes == "DESIGN") {
       pfDes = pf;
       eff = effDes;
       
       // internal power, before flowing through this component's output impedance
-      real PInternal = EP_O.S.r / eff**sign(EP_O.S.r);
-      Loss_r = PInternal - EP_O.S.r;
-      Loss_j = 0;
-      R = Loss_r / EP_O.I.mag**2;
+      cmplx_temp = EP_O.S;
+      real PInternal = cmplx_temp.getReal() / eff;
+      Loss.set(PInternal - cmplx_temp.getReal(), 0);
+      R = Loss.getReal() / norm_c(EP_O.I);
       L = 0;
 
       // Declare design point power.
-      powerDes = EP_O.S.r;
+      powerDes = cmplx_temp.getReal();
 
       // Energy consumed at this operating point.
       energy = PInternal * segmentTime;
@@ -376,8 +377,8 @@ this component, see MotorGeneratorMap.int";
         energyDes = energy;
       }
 
-      real energyBasedMass = (energyDes*1000) / SpecificEnergy; // (kW-h/1000) / (W-h/kg) = kg
-      real powerBasedMass = EP_O.S.r / SpecificPower;
+      real energyBasedMass = (energyDes/1000) / SpecificEnergy; // (kW-h/1000) / (W-h/kg) = kg
+      real powerBasedMass = cmplx_temp.getReal() / SpecificPower;
 
       if (energyBasedMass > powerBasedMass) {
         Mass = energyBasedMass; // compute mass based on assumed specific energy
@@ -395,12 +396,13 @@ this component, see MotorGeneratorMap.int";
       Loss_r = EP_O.I.mag**2 * R;
       Loss_j = 0;
       eff = (EP_O.S.r / (EP_O.S.r + Loss_r))**sign(EP_O.S.r);
-
+      
       // energy consumed at this operating point.
-      energy = (EP_O.S.r + Loss_r) * segmentTime;
+      Loss.set(Loss_r,Loss_j);
+      energy = (cmplx_temp.getReal() + Loss.getReal()) * segmentTime;
     }
 
-    real KW_PER_BTU_PER_SEC = 1.05505585;
+      real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = sqrt(Loss_r**2 + Loss_j**2);
     Q_heat /= KW_PER_BTU_PER_SEC;
 

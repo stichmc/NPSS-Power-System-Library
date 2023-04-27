@@ -23,9 +23,12 @@
 #include "npssel.view"
 #include "IOUtils.fnc"
 
+// include consortium port desired changes
+#include "consort_fix.fnc"
+
 #include "baseline_all_elec.mdl"
 
-MODELNAME = "Baseline All Electric";
+MODELNAME = "Baseline All Electric Example";
 
 /**
  --------------------

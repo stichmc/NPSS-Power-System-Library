@@ -136,9 +136,9 @@ described above.";
     description = "Imaginary portion of voltage.";
   }
 
-  ComplexNumber V;
-  ComplexNumber S;
-  ComplexNumber I;
+  Complex V;
+  Complex S;
+  Complex I;
 
   //--------------------------------------
   // ******* OPTION VARIABLE SETUP *******
@@ -186,7 +186,7 @@ described above.";
     autoSetup = TRUE;
   }
 
-  Dependent dep_power_factor{    
+  Dependent dep_power_factor{
     eq_lhs = "EP_I.S.j";
     eq_rhs = "EP_I.S.r * tan(acos(pfDemand))"; // reformulated constraint to avoid depending on angles or divisions.
     autoSetup = TRUE;
@@ -229,7 +229,7 @@ described above.";
     Loss_r = EP_I.S.r - P;
     Loss_j = EP_I.S.j;
 
-    real KW_PER_BTU_PER_SEC = 1.05505585;
+      real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = sqrt(Loss_r**2 + Loss_j**2);
     Q_heat /= KW_PER_BTU_PER_SEC;
 

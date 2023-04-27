@@ -173,27 +173,49 @@ ElectricAssembly powerPropagation {
   **/
 
   // Branch 1
-  linkPortI("S1.EP_O", "C1.EP_I");
-  linkPortI("C1.EP_O", "E1.EP_I1");
+  linkPorts("S1.EP_O", "C1.EP_I", "PORT1");
+  // linkPortI("S1.EP_O", "C1.EP_I");
+  linkPorts("C1.EP_O", "E1.EP_I1", "PORT2");
+  // linkPortI("C1.EP_O", "E1.EP_I1");
+
   // Branch 2
-  linkPortI("S2.EP_O", "C2.EP_I");
-  linkPortI("C2.EP_O", "E1.EP_I2");
+  linkPorts("S2.EP_O", "C2.EP_I", "PORT3");
+  // linkPortI("S2.EP_O", "C2.EP_I");
+  linkPorts("C2.EP_O", "E1.EP_I2", "PORT4");
+  // linkPortI("C2.EP_O", "E1.EP_I2");
+
   // Branch 3
-  linkPortI("E1.EP_O1", "C4.EP_I");
-  linkPortI("C4.EP_O", "L1.EP_I");
+  linkPorts("E1.EP_O1", "C4.EP_I", "PORT5");
+  // linkPortI("E1.EP_O1", "C4.EP_I");
+  linkPorts("C4.EP_O", "L1.EP_I", "PORT6");
+  // linkPortI("C4.EP_O", "L1.EP_I");
+
   // Branch 4
-  linkPortI("E1.EP_O2", "C5.EP_I");
-  linkPortI("C5.EP_O", "L2.EP_I");
+  linkPorts("E1.EP_O2", "C5.EP_I", "PORT7");
+  // linkPortI("E1.EP_O2", "C5.EP_I");
+  linkPorts("C5.EP_O", "L2.EP_I", "PORT8");
+  // linkPortI("C5.EP_O", "L2.EP_I");
+
   // Branch 5
-  linkPortI("E1.EP_O3", "C6.EP_I");
-  linkPortI("C6.EP_O", "R1.EP_I");
-  linkPortI("R1.EP_O", "C8.EP_I");
-  linkPortI("C8.EP_O", "E2.EP_I1");
+  linkPorts("E1.EP_O3", "C6.EP_I", "PORT9");
+  // linkPortI("E1.EP_O3", "C6.EP_I");
+  linkPorts("C6.EP_O", "R1.EP_I", "PORT10");
+  // linkPortI("C6.EP_O", "R1.EP_I");
+  linkPorts("R1.EP_O", "C8.EP_I", "PORT11");
+  // linkPortI("R1.EP_O", "C8.EP_I");
+  linkPorts("C8.EP_O", "E2.EP_I1", "PORT12");
+  // linkPortI("C8.EP_O", "E2.EP_I1");
+
   // Branch 6
-  linkPortI("E2.EP_O", "C7.EP_I");
-  linkPortI("C7.EP_O", "L3.EP_I");
+  linkPorts("E2.EP_O", "C7.EP_I", "PORT13");
+  // linkPortI("E2.EP_O", "C7.EP_I");
+  linkPorts("C7.EP_O", "L3.EP_I", "PORT14");
+  // linkPortI("C7.EP_O", "L3.EP_I");
+
   // Branch 7
-  linkPortI("B1.EP_O", "C3.EP_I");
-  linkPortI("C3.EP_O", "E2.EP_I2");
+  linkPorts("B1.EP_O", "C3.EP_I", "PORT15");
+  // linkPortI("B1.EP_O", "C3.EP_I");
+  linkPorts("C3.EP_O", "E2.EP_I2", "PORT16");
+  // linkPortI("C3.EP_O", "E2.EP_I2");
   
 }

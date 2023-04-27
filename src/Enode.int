@@ -26,10 +26,10 @@ class Enode extends ElectricElement {
   // title = "";
 
   description = "The " + isA() + " is an abstract component representing a bus or electrical 
-  node that has an arbitrary number of electrical connections to it. It includes independents 
-  for the node voltage to be selected such that Kirchoff's current law (sum of all currents 
-  into node = 0) is satisfied using dependents that state Kirchoff's law. 
-  Supports DC, single-phase, and 3-phase AC.";
+node that has an arbitrary number of electrical connections to it. It includes independents 
+for the node voltage to be selected such that Kirchoff's current law (sum of all currents 
+into node = 0) is satisfied using dependents that state Kirchoff's law. 
+Supports DC, single-phase, and 3-phase AC.";
 
   usageNotes = isA() +
   "
@@ -51,7 +51,7 @@ approach taken in fluid networks within NPSS rocket models.";
   // ****** SETUP VARIABLES ******
   //------------------------------
 
-  ComplexNumber Inet;
+  Complex Inet;
   real Vmag;
   real Vangle;
   real Vreal {
@@ -117,7 +117,7 @@ approach taken in fluid networks within NPSS rocket models.";
     description = "Varies the real portion of node voltage.";
   }
   
-  Independent ind_Vimag {
+  Independent ind_Vimag { 
     varName = "Vimag";
     autoSetup = TRUE;
     indepRef = "1000";
@@ -125,13 +125,13 @@ approach taken in fluid networks within NPSS rocket models.";
   }
   
   Dependent dep_Ireal {
-    eq_lhs = "Inet.rRMS";
+    eq_lhs = "Inet.getReal()";
     eq_rhs = "0.";
     autoSetup = TRUE;
   }
   
   Dependent dep_Iimag {
-    eq_lhs = "Inet.jRMS";
+    eq_lhs = "Inet.getImag()";
     eq_rhs = "0.";
     autoSetup = TRUE;
   }
@@ -173,7 +173,7 @@ approach taken in fluid networks within NPSS rocket models.";
     for (i = 0; i < ElectricInputPorts.entries(); i++) {
       Iname = ElectricInputPorts[i] + ".I"; 
       Inet.plus(Iname);			    
-    }
+      }
 
     for (i = 0; i < ElectricOutputPorts.entries(); i++) {
       Iname = ElectricOutputPorts[i] + ".I";
@@ -234,8 +234,8 @@ approach taken in fluid networks within NPSS rocket models.";
     if (name->hasInterface("ElectricOutputPort")) {
       ElectricOutputPorts.append(name);
       ElectricPorts.append(name);
-    }
   }
+}
   
   // ----------------------------------
   //  ****** MISC FUNCTIONS ******

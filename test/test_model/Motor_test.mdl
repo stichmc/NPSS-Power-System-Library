@@ -33,7 +33,8 @@ Element Shaft Test_Shaft {
   //integrate_Nmech.autoSetup = FALSE;	
 }
 
-linkPortI( "E1.EP_O", "EM.EP_I" );
+linkPorts( "E1.EP_O" ,"EM.EP_I","PORT1" );
+//linkPortI( "E1.EP_O", "EM.EP_I" );
 linkPorts( "Test_Shaft.Sh_I" ,"EM.Sh_O","Test_Shaft_Example" );
 
 solverSequence = {"E1","EM"};

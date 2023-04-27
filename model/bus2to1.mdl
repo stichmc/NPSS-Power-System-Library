@@ -129,12 +129,18 @@ Element Shaft Turbine_Shaft {
 //-------------------------------------------------------------------------------------------------
 // Component Linkages
 //-------------------------------------------------------------------------------------------------
-linkPortI( "Gen1.EP_O", "Cable2a.EP_I" );
-linkPortI( "Gen2.EP_O", "Cable2b.EP_I" );
-linkPortI( "Cable2a.EP_O", "E2.EP_I1" );
-linkPortI( "Cable2b.EP_O", "E2.EP_I2" );
-linkPortI( "E2.EP_O", "Cable3.EP_I" );
-linkPortI( "Cable3.EP_O", "EM1.EP_I" );
+linkPorts("Gen1.EP_O","Cable2a.EP_I","Port1");
+// linkPortI( "Gen1.EP_O", "Cable2a.EP_I" );
+linkPorts("Gen2.EP_O","Cable2b.EP_I","Port2");
+// linkPortI( "Gen2.EP_O", "Cable2b.EP_I" );
+linkPorts("Cable2a.EP_O","E2.EP_I1","Port3");
+// linkPortI( "Cable2a.EP_O", "E2.EP_I1" );
+linkPorts("Cable2b.EP_O","E2.EP_I2","Port4");
+// linkPortI( "Cable2b.EP_O", "E2.EP_I2" );
+linkPorts("E2.EP_O","Cable3.EP_I","Port5");
+// linkPortI( "E2.EP_O", "Cable3.EP_I" );
+linkPorts("Cable3.EP_O","EM1.EP_I","Port6");
+// linkPortI( "Cable3.EP_O", "EM1.EP_I" );
 propagateEpsSolverListAndPowerTypes();
 
 linkPorts( "Propulsor_Shaft.Sh1_I"  , "EM1.Sh_O"          	, "Shaft_Motor1" );

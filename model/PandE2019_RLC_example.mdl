@@ -13,7 +13,7 @@
 //-------------------------------------------------------------------------------------------------
 
 // create and ACsource
-class ACSource extends Element{
+class ACSource extends Element {
   ElectricOutputPort EP_O;
   ElectricInputPort EP_I1, EP_I2;
 }
@@ -23,46 +23,51 @@ real defaultFrequency = 60.;
 ACSource ACS{
   void postexecute(){
     EP_O.frequency = 60.;
-    EP_O.setIVRMS( 0,0, 120, 0 );
-    EP_I1.setIVRMS( 0, 0, 0, 0 );
-    EP_I2.setIVRMS( 0, 0, 0, 0 );
+    EP_O.setIVRMS(cmplx_zero, V_out);
+    EP_I1.setIVRMS(cmplx_zero, cmplx_zero);
+    EP_I2.setIVRMS(cmplx_zero, cmplx_zero);
   }
 }
 
-Capacitor C1{
+Enode n1 {
+  ElectricInputPort EP_I;
+  ElectricOutputPort EP_O1, EP_O2;
+  frequency = 60.;
+
+  V_RMS.set(120 - 70, 40); // guess value
+}
+
+Enode n2 {
+  ElectricInputPort EP_I;
+  ElectricOutputPort EP_O;
+  frequency = 60.;
+
+  V_RMS.set(12 - 70 + 8, 40 + 6.98); // guess value
+}
+
+Capacitor C1 {
   C = 10e-6;  
 }
 
-Inductor L1{
+Inductor L1 {
   L = 500e-3;
 }
 
-Capacitor C2{
+Capacitor C2 {
   C = 1e-6;
 }
 
-Element Resistor R1{
+Resistor R1 {
 	R = 500;
 }
 
-//--------------------------------------------------------
-// link it up
-//--------------------------------------------------------
-linkEports( "ACS.EP_O", "C1.EP_I", "PORT" );
-linkEports("C1.EP_O", "n1" ,"NODE");
-linkEports( "L1.EP_I", "n1", "NODE" );
-linkEports( "L1.EP_O", "n2", "NODE" );
-linkEports( "C2.EP_I", "n2", "NODE" );
-linkEports( "C2.EP_O", "ACS.EP_I1", "PORT" );
-linkEports( "R1.EP_I", "n1", "NODE" );
-linkEports( "R1.EP_O", "ACS.EP_I2", "PORT" );
+linkPorts("ACS.EP_O", "C1.EP_I", "PORT1");
+linkPorts("C1.EP_O", "n1.EP_I" ,"NODE2");
+linkPorts("L1.EP_I", "n1.EP_O1", "NODE3");
+linkPorts("L1.EP_O", "n2.EP_I", "NODE4");
+linkPorts("C2.EP_I", "n2.EP_O", "NODE5");
+linkPorts("C2.EP_O", "ACS.EP_I1", "PORT6");
+linkPorts("R1.EP_I", "n1.EP_O2", "NODE7");
+linkPorts("R1.EP_O", "ACS.EP_I2", "PORT8");
 
-n1{
-  VrealRMS = 120-70;  //guess value
-  VimagRMS = 40;  //guess value		
-}
-
-n2{
-  VrealRMS = 120-70+8;  //guess value
-  VimagRMS = 40+6.98;  //guess value
-}
+setOption("ElectricPowerType", "AC");

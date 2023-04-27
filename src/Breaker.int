@@ -158,12 +158,12 @@ current information is updated in the breaker's input and output ports.";
     description = "Imaginary component of voltage dropped across breaker, given operating current.";
   }
   
-  ComplexNumber dV;
-  ComplexNumber Vo;
-  ComplexNumber Z;
-  ComplexNumber I;
-  ComplexNumber S;
-  ComplexNumber Losses;
+  Complex dV;
+  Complex Vo;
+  Complex Z;
+  Complex I;
+  Complex S;
+  Complex Losses;
 
   //------------------------------------
   // ****** OPTION VARIABLE SETUP ******
@@ -235,7 +235,7 @@ current information is updated in the breaker's input and output ports.";
     frequency = EP_I.frequency;
     
     if (switchDes == "DESIGN" ) {
-
+      
       // do the component performance/design calculations.
       if ((EP_I.ElectricPowerType == "DC") && (EP_O.ElectricPowerType == "DC")) {
 
@@ -248,44 +248,38 @@ current information is updated in the breaker's input and output ports.";
         real dc_efficiency = effDes**2;
         S.setrj(EP_I.S.r * dc_efficiency**sign(EP_I.S.r),  0.);
         
-        // calculate mass 
+        // calculate mass
         Mass = 2.*EP_I.S.r / SpecificPower;
-
+        
         // calculate losses
-        Losses.copy("EP_I.S");
-        Losses.minus("S");
+        Losses = EP_I.S - S;
 
       } else if ((EP_I.ElectricPowerType != "DC") && (EP_O.ElectricPowerType != "DC")) {
         
         // calculate this component's total load power
         S.setrj(EP_I.S.r * effDes**sign(EP_I.S.r),  EP_I.S.j);
-
+        
         // calculate this component mass using total power
         Mass = EP_I.S.mag / SpecificPower;
-
+        
         // calculate losses
-        Losses.copy("EP_I.S");
-        Losses.minus("S");
+        Losses = EP_I.S - S;
         
         // convert Losses to represent per-phase losses
         if ((EP_I.ElectricPowerType == "AC3") && (EP_O.ElectricPowerType == "AC3")) {
           Losses.scale(1./3.);
         }
-      }
-
-      // calculate this component impedance
+        }
+        
+        // calculate this component impedance
       R = 1000.*Losses.mag / EP_I.I.mag**2.;
       L = 0;
       Z.setrj(R,  0.);
-    }
-
-    // dV = I * Z
-    dV.copy("EP_I.I");
-    dV.times("Z");
-
-    // Vo_ln = Vi_ln - dV_ln
-    Vo.copy("EP_I.VLN");
-    Vo.minus("dV");
+        }
+      
+    dV = EP_I.I * Z;
+    
+    Vo = EP_I.VLN - dV;
 
     if ((EP_I.ElectricPowerType == "AC3") && (EP_O.ElectricPowerType == "AC3")) {
       // Convert this VLN we have calculated into a VLL (port expects VLL inputs)
@@ -299,9 +293,9 @@ current information is updated in the breaker's input and output ports.";
     Loss_r = EP_I.S.r - EP_O.S.r;
     Loss_j = EP_I.S.j - EP_O.S.j;
 
-    real KW_PER_BTU_PER_SEC = 1.05505585;
-    Q_heat = sqrt(Loss_r**2 + Loss_j**2);
-    Q_heat /= KW_PER_BTU_PER_SEC;
+      real KW_PER_BTU_PER_SEC = 1.05505585;
+      Q_heat = sqrt(Loss_r**2 + Loss_j**2);
+      Q_heat /= KW_PER_BTU_PER_SEC;
 
     if (switchThermPort == "TRUE") {
       // run the thermal mass model

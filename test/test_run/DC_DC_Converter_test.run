@@ -18,9 +18,9 @@ Security, United States Department of Commerce. Violations are punishable by
 fine, imprisonment, or both.
 *******************************************************************************/
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
+// // add in electric port
+// #include "ElectricPort.prt"
+// #include "InterpretedPort.int"
 
 //include viewers
 #include "npssel.view"

@@ -17,6 +17,7 @@
 #define __MOTOR__
 
 #include "PSL_math.fnc"
+#include "consort_fix.fnc"
 
 class Motor extends ElectricElement {
   
@@ -246,7 +247,7 @@ this component, see MotorGeneratorMap.int";
 
   ElectricInputPort EP_I {
     description = "Electric input port.";
-    ElectricPowerType.allowedValues = { "AC3" };
+    //ElectricPowerType.allowedValues = { "AC3" };
     setOption("ElectricPowerType", "AC3"); // only AC3 output allowed
   }
 
@@ -389,9 +390,15 @@ this component, see MotorGeneratorMap.int";
   }
 
   // end calculation section
+  Complex Icomplex;
+	Complex Vcomplex;
   void prePass() {
+    cmplx_temp = EP_I.I;
     EP_I.frequency = frequency;
-    EP_I.setIVRMS(EP_I.I.r, EP_I.I.j, Vreal, Vimag);
+    Icomplex.set(cmplx_temp.getReal(),cmplx_temp.getImag());
+    Vcomplex.set(Vreal,Vimag);
+    EP_I.setIVRMS(Icomplex, Vcomplex); 
+    //EP_I.setIVRMS(EP_I.I.r, EP_I.I.j, Vreal, Vimag);
   }
 }
 #endif

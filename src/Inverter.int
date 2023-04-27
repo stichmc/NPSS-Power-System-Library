@@ -74,11 +74,11 @@ component to the surrounding environment. For more information, see EThermalMass
   // ****** SETUP VARIABLES ******
   //------------------------------
   
-  ComplexNumber Sac;
-  ComplexNumber Idc;
-  ComplexNumber Iac;
-  ComplexNumber Vac;
-  ComplexNumber Vdc;
+  Complex Sac;
+  Complex Idc;
+  Complex Iac;
+  Complex Vac;
+  Complex Vdc;
   
   eff {
     value = 1.0; IOstatus = "input"; units = "none";
@@ -148,8 +148,8 @@ component to the surrounding environment. For more information, see EThermalMass
     description = "Power dissipation at current time.";
   }
   
-  ComplexNumber dV;
-  ComplexNumber Z;
+  Complex dV;
+  Complex Z;
 
   //------------------------------------
   // ****** OPTION VARIABLE SETUP ******
@@ -255,10 +255,10 @@ component to the surrounding environment. For more information, see EThermalMass
     real pwrOut = pwrIn * eff**sign(pwrIn);
 
     // Calculate ideal output voltage, VAC line-to-neutral
-    ComplexNumber VoIdeal; VoIdeal.setMagPhase( EP_I.V.r/sqrt(2)/sqrt(3), 0);
+    Complex VoIdeal; VoIdeal.setMagPhase( EP_I.V.r/sqrt(2)/sqrt(3), 0);
     
     // Calculate current, AC line current = conj(S*1000/(numPhases*VoIdeal));
-    ComplexNumber Io;
+    Complex Io;
     if (EP_O.ElectricPowerType == "AC3") {
       Io.setrj( pwrOut*1000./3., 0.);
     }
@@ -274,7 +274,7 @@ component to the surrounding environment. For more information, see EThermalMass
     dV.times("Z");
     
     // Vo_ln = Vi_ln - dV_ln
-    ComplexNumber Vo; Vo.copy("VoIdeal");
+    Complex Vo; Vo.copy("VoIdeal");
     Vo.minus("dV");
 
     if (EP_O.ElectricPowerType == "AC3") {

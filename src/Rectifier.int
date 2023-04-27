@@ -74,10 +74,10 @@ component to the surrounding environment. For more information, see EThermalMass
   // ****** SETUP VARIABLES ******
   //------------------------------
   
-  ComplexNumber Sdc;
-  ComplexNumber Idc;
-  ComplexNumber Iac;
-  ComplexNumber Vdc;
+  Complex Sdc;
+  Complex Idc;
+  Complex Iac;
+  Complex Vdc;
     
   eff {
     value = 1.0; IOstatus = "input"; units = "none";

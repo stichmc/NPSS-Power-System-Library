@@ -28,9 +28,6 @@ the cables, and then run off design at the same point, as well as a point with
 increased power to see how variables change
 *******************************************************************************/
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
 
 //include viewers
 #include "npssel.view"

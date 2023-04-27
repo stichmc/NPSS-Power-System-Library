@@ -16,9 +16,9 @@
 #include "npssel.view"
 #include "npssel_runtime.view"
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
+// // add in electric port
+// #include "ElectricPort.prt"
+// #include "InterpretedPort.int"
 
 MODELNAME = "ACBackflow";
 

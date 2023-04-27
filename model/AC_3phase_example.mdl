@@ -17,36 +17,40 @@
 
 // create a power source class 
 class SimpleSource extends Element {
-  ElectricOutputPort EP_Oa;
   ElectricInputPort EP_Ia;
+  ElectricOutputPort EP_Oa;
 }
 
 real defaultFrequency = 60.;
 
 SimpleSource Source {
   void postexecute() {;
-    EP_Oa.setIVRMSphaseDeg(0.,0.,208.,0.);
-    EP_Ia.setIVRMSphaseDeg( 0.,0.,0.,0.);
+    EP_Oa.setIVRMS(polar_c(0, 0), polar_c(208, 0));
+    EP_Ia.setIVRMS(polar_c(0, 0), polar_c(0, 0));
   }
 }
 
-Element Cable A1 {
+Cable A1 {
   length = 1;
   R = 0.01745; // 0.052264;
   L = 1.325e-3; // 0.49726;
 }
 
-Element BasicLoad A2 {
-  Z.setMagPhaseDeg(15. / 3., 45.);
-}
-
-// link it up
-linkEports("Source.EP_Oa", "A1.EP_I", "PORT");
-linkEports("A1.EP_O", "NA1", "NODE");
-linkEports("A2.EP_I", "NA1", "NODE");
-linkEports("A2.EP_O", "Source.EP_Ia", "PORT");
-
-NA1 {
+Enode NA1 {
+  ElectricInputPort EP_I;
+  ElectricOutputPort EP_O;
   VrealRMS = 447.3 * cos(-3.78 * PI / 180.);
   VimagRMS = 447.3 * sin(-3.78 * PI / 180.);
 }
+
+BasicLoad A2 {
+  Z.set((15./3.) * cos(45. * PI/180), (15./3.) * sin(45. * PI/180));
+}
+
+// link it up
+linkPorts("Source.EP_Oa", "A1.EP_I", "PORT1");
+linkPorts("A1.EP_O", "NA1.EP_I", "NODE2");
+linkPorts("A2.EP_I", "NA1.EP_O", "NODE3");
+linkPorts("A2.EP_O", "Source.EP_Ia", "PORT4");
+
+solverSequence = {"Source", "A1", "A2", "NA1"};

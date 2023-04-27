@@ -135,9 +135,9 @@ current information is updated in the cable's input and output ports.";
     description = "Amps to weight/length ratio for the cable.";
   }
   
-  ComplexNumber dV, Vo;
-  ComplexNumber Z;
-  ComplexNumber I;
+  Complex dV, Vo;
+  Complex Z;
+  Complex I;
   
   int n_phases {
     value = 3; IOstatus = "input"; units = "none";
@@ -364,10 +364,10 @@ current information is updated in the cable's input and output ports.";
     real percent;
     real resistance; // [ohms/m]
     real reactance; // [ohms/m]
-    ComplexNumber impedance; // [ohms]
-    ComplexNumber voltage_drop;
-    ComplexNumber voltage;
-    ComplexNumber current;
+    Complex impedance; // [ohms]
+    Complex voltage_drop;
+    Complex voltage;
+    Complex current;
     voltage.copy("EP_I.VLN");
     
     if (frequency == 400) {
@@ -377,7 +377,7 @@ current information is updated in the cable's input and output ports.";
     } else if (frequency == 800) {
       row = 2;
     }
-    
+    quit();
     while (search_stop == 0) {
       found = 0;
       while (found == 0) {
@@ -413,7 +413,7 @@ current information is updated in the cable's input and output ports.";
           reactance = (frequency/60) * cable_reactances[index]; // [ohms/m]
           impedance.setrj(resistance, reactance);
           impedance.setMagPhase(impedance.mag * length / conductors, impedance.phase); // [ohms]
-          current.copy("EP_I.I");
+          current = EP_I.I;
           
           percent = 100. * voltage_drop.mag / voltage.mag;
             
@@ -592,10 +592,10 @@ current information is updated in the cable's input and output ports.";
   
   void calculate() {
     
-    // get frequency from input port
+    // get frequency from input port, propagate through to output port.
     frequency = EP_I.frequency;
+    EP_O.frequency = EP_I.frequency;
     
-    // If on-design mode, must select the cable
     if (switchDes == "DESIGN") {
       if ((EP_I.ElectricPowerType == "DC") && (EP_O.ElectricPowerType == "DC")) {
         dc_cable_metrics();
@@ -604,20 +604,15 @@ current information is updated in the cable's input and output ports.";
       }
     }
     
-    // dV = I * Z
-    Z.setrj(R,  L * (2*PI*EP_I.frequency));
-    dV.copy("EP_I.I");
-    dV.times("Z");
-
-    // Vo_ln = Vi_ln - dV_ln
-    Vo.copy("EP_I.VLN");
-    Vo.minus("dV");
-
+    dV = EP_I.I * Z;
+      
+    Vo = EP_I.VLN - dV;
+    
     if ((EP_I.ElectricPowerType == "AC3") && (EP_O.ElectricPowerType == "AC3")) {
       // Convert this VLN we have calculated into a VLL (port expects VLL inputs)
       Vo.ln2ll();
     } // If not AC3, then we do not need to convert, because VLL = VLN
-
+    
     // set the conditions in the port
     EP_O.frequency = EP_I.frequency;
     EP_O.setIVRMS(EP_I.I.r, EP_I.I.j, Vo.r, Vo.j);
@@ -627,9 +622,9 @@ current information is updated in the cable's input and output ports.";
     
     eff = (EP_O.S.r / EP_I.S.r)**sign(EP_I.S.r);	
 
-    real KW_PER_BTU_PER_SEC = 1.05505585;
-    Q_heat = sqrt(Loss_r**2 + Loss_j**2);
-    Q_heat /= KW_PER_BTU_PER_SEC;
+      real KW_PER_BTU_PER_SEC = 1.05505585;
+      Q_heat = sqrt(Loss_r**2 + Loss_j**2);
+      Q_heat /= KW_PER_BTU_PER_SEC;
 
     if (switchThermPort == "TRUE") {
       // run the thermal mass model

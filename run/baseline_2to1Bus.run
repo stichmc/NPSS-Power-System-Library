@@ -29,8 +29,8 @@ fine, imprisonment, or both.
 #include "npssel_runtime.view"
 
 // add in port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
+// #include "ElectricPort.prt"
+// #include "InterpretedPort.int"
 
 //model file
 #include "bus2to1.mdl"

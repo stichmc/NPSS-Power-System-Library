@@ -33,8 +33,11 @@ Element Shaft Test_Shaft {
   //integrate_Nmech.autoSetup = FALSE;	
 }
 
-linkPortI( "Gen.EP_O", "E1.EP_I" );
+linkPorts("Gen.EP_O", "E1.EP_I", "PORT1");
+// linkPortI( "Gen.EP_O", "E1.EP_I" );
 linkPorts( "Test_Shaft.Sh_I" ,"Gen.Sh_O","Test_Shaft_Example" );
 
-string var[] = propagateEpsSolverListAndPowerTypes();
-solverSequence = var;
+solverSequence = {"Gen","E1","Test_Shaft"};
+
+// string var[] = propagateEpsSolverListAndPowerTypes();
+// solverSequence = var;

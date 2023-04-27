@@ -18,20 +18,23 @@ Security, United States Department of Commerce. Violations are punishable by
 fine, imprisonment, or both.
 *******************************************************************************/
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
+// // add in electric port
+// #include "ElectricPort.prt"
+// #include "InterpretedPort.int"
 
 //include viewers
 #include "npssel.view"
 #include "npssel_runtime.view"
+
+// include consortium port desired changes
+#include "consort_fix.fnc"
 
 // add circuit elements
 #include "Resistor.int"
 #include "Inductor.int"
 #include "Capacitor.int"
 
-MODELNAME = "RLC Circuit";
+MODELNAME = "RLC Circuit Example";
 
 // select model
 #include "PandE2019_RLC_example.mdl"
@@ -47,7 +50,7 @@ solver.diagnosticFile = "output/Solver.bad";
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
 setOption( "ElectricPowerType", "AC1" );
- 
+
 run();
 
 page.display();  // output data to out file

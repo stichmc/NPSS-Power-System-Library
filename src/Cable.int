@@ -110,8 +110,8 @@ no sizing logic included in this component, other than the mass calculations des
     description = "Amps to weight/length ratio for the cable.";
   }
 
-  ComplexNumber dV, Vo;
-  ComplexNumber Z;
+  Complex dV, Vo;
+  Complex Z;
 
   //------------------------------------
   // ****** OPTION VARIABLE SETUP ******
@@ -188,15 +188,10 @@ no sizing logic included in this component, other than the mass calculations des
     
     // get frequency from input port
     frequency = EP_I.frequency;
-    
-    // dV = I * Z
-    Z.setrj(R,  L * (2*PI*frequency));
-    dV.copy("EP_I.I");
-    dV.times("Z");
 
-    // Vo_ln = Vi_ln - dV_ln
-    Vo.copy("EP_I.VLN");
-    Vo.minus("dV");
+    dV = I * Z
+    
+    Vo_ln = Vi_ln - dV_ln
 
     if ((EP_I.ElectricPowerType == "AC3") && (EP_O.ElectricPowerType == "AC3")) {
       // Convert this VLN we have calculated into a VLL (port expects VLL inputs)
@@ -206,11 +201,11 @@ no sizing logic included in this component, other than the mass calculations des
     // set the conditions in the port
     EP_O.frequency = EP_I.frequency;
     EP_O.setIVRMS(EP_I.I.r, EP_I.I.j, Vo.r, Vo.j);
-    
+
     Loss_r = EP_I.S.r - EP_O.S.r;
     Loss_j = EP_I.S.j - EP_O.S.j;
 
-    real KW_PER_BTU_PER_SEC = 1.05505585;
+      real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = sqrt(Loss_r*Loss_r + Loss_j*Loss_j);
     Q_heat /= KW_PER_BTU_PER_SEC;
     
@@ -220,12 +215,12 @@ no sizing logic included in this component, other than the mass calculations des
         S_eThermMass.execute();
       }
     }
-    
+
     eff = (EP_O.S.r / EP_I.S.r)**sign(EP_I.S.r);	
 
     if (switchDes == "DESIGN") {
       Mass = EP_I.I.mag / SpecificAmperage * length * 3; // calculate the mass of the cable
-    }		
+    }
   }
 }
 #endif

@@ -18,18 +18,21 @@ Security, United States Department of Commerce. Violations are punishable by
 fine, imprisonment, or both.
 *******************************************************************************/
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
+// // add in electric port
+// #include "ElectricPort.prt"
+// #include "InterpretedPort.int"
 
 //include viewers
 #include "npssel.view"
 #include "npssel_runtime.view"
 
+// include consortium port desired changes
+#include "consort_fix.fnc"
+
 // add circuit elements
 #include "Resistor.int"
 
-MODELNAME = "Resistive Circuit";
+MODELNAME = "Resistive Circuit Example";
 
 // select model
 #include "R_dc_example.mdl"
@@ -50,11 +53,9 @@ cout << endl << solver.dependentNames << endl << solver.independentNames << endl
 //solverSequence = { "Bat", "R1", "C1", "L1", "C2" }
 solver.debugLevel = "ITERATION_DETAILS";
 solver.diagnosticFile = "output/Solver.bad";
-
-
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
- 
+
 run();
 
 cout<< "\n \n"<<endl;

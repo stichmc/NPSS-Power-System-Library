@@ -18,15 +18,14 @@ Security, United States Department of Commerce. Violations are punishable by
 fine, imprisonment, or both.
 *******************************************************************************/
 
-// add in electric port
-#include "ElectricPort.prt"
-#include "InterpretedPort.int"
-
 //include viewers
 #include "npssel.view"
 #include "npssel_runtime.view"
 
-MODELNAME = "3 Phase";
+// include consortium port desired changes
+#include "consort_fix.fnc"
+
+MODELNAME = "3 Phase Example";
 
 // select model
 #include "AC_3phase_example.mdl"
@@ -42,7 +41,7 @@ solver.diagnosticFile = "output/Solver.bad";
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
 
-setOption( "ElectricPowerType", "AC3" );
+setOption("ElectricPowerType", "AC3");
 
 solver.debugLevel = "ITERATION_DETAILS";
 solver.diagnosticFile = "output/solver.bad";

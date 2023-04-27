@@ -2,10 +2,10 @@
 :: -----------------------------------------------------------------------------
 :: |                                                                           |
 :: | File Name:     runnpss-psl.bat                                            |
-:: | Author(s):     Jonathan Fuzaro Alencar                                    |
-:: | Date(s):       February 2020                                              |
+:: | Author(s):     Michael Stich                                              |
+:: | Date(s):       March 2023                                                 |
 :: |                                                                           |
-:: | Description:   Batch script to run NPSS PSL files.                        |
+:: | Description:   Batch script to run NPSS Test files.                       |
 :: |                                                                           |
 :: -----------------------------------------------------------------------------
 
@@ -17,12 +17,12 @@ echo.
 echo =========== %~n1 ===========
 echo.
 
-call runnpss -I src -I include -I model -I view -I utils -iclodfirst %1
+call runnpss -I src -I include -I view -I utils -I test -iclodfirst %1
 goto Done
 
 :: You got down here, so run all models in the model folder.
 :RunAll
-set /p=You are running runnpss-psl.bat without an argument. This will run all models. Hit ENTER to run first model
-for %%i in (run\*) do (call runnpss -I src -I include -I model -I view -I utils -iclodfirst %%i & set /p=Finished %%i, Hit ENTER to continue )
-echo Finished running all models
+set /p=You are running testnpss.bat without an argument. This will run all models in test file. Hit ENTER to run first model
+for %%i in (test\test_run\*) do (call runnpss -I src -I include -I model -I view -I utils -I test -iclodfirst %%i & set /p=Finished %%i, Hit ENTER to continue )
+echo Finished running all tests
 :Done

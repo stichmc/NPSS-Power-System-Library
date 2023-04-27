@@ -223,7 +223,7 @@ this component, see MotorGeneratorMap.int";
 
   ElectricOutputPort EP_O {
     description = "Electric output port.";
-    ElectricPowerType.allowedValues = { "AC3" };
+    //ElectricPowerType.allowedValues = { "AC3" };
     setOption("ElectricPowerType", "AC3"); // only AC3 output allowed
   }
   
@@ -287,8 +287,18 @@ this component, see MotorGeneratorMap.int";
 
     // Start by populating electric port with power data.
     EP_O.frequency = frequency;
-    ComplexNumber Vo; Vo.setMagPhase( Vrms, Vphase * PI/180. );
-    EP_O.setIVRMS(Ireal, Iimag, Vo.r, Vo.j);
+    Complex Vo; Vo.setMagPhase( Vrms, Vphase * PI/180. );
+
+    Complex Icomplex;
+	  Complex Vcomplex;
+
+    cmplx_temp = EP_I.I;
+    EP_I.frequency = frequency;
+    Icomplex.set(cmplx_temp.getReal(),cmplx_temp.getImag());
+    Vcomplex.set(Vreal,Vimag);
+    EP_I.setIVRMS(Icomplex, Vcomplex); 
+
+    //EP_O.setIVRMS(Ireal, Iimag, Vo.r, Vo.j);
 
     real powerfactor = EP_O.PF;
     Speed = Sh_O.Nmech;

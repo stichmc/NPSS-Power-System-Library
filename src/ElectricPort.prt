@@ -17,6 +17,7 @@
 #define __ELECTRIC_PORT__
 
 #include "ComplexNumber.int"
+#include "PropagatePower.fnc"
 
 int ESO_Id_NoRefPort = (10000 * 141) + (100 * 22) + 1;
 ESOregCreate(ESO_Id_NoRefPort, 1, "No refport in this port (make sure the port is connected)!");

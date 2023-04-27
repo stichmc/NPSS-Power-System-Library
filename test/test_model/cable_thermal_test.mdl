@@ -38,5 +38,7 @@ ACS.EP_I.setOption("ElectricPowerType","AC3");
 ACCable.EP_O.setOption("ElectricPowerType","AC3");
 ACCable.EP_I.setOption("ElectricPowerType","AC3");
 
-linkPortI( "ACS.EP_O", "ACCable.EP_I" );
-linkPortI( "ACCable.EP_O", "ACS.EP_I" );
+linkPorts("ACS.EP_O", "ACCable.EP_I", "PORT1");
+// linkPortI( "ACS.EP_O", "ACCable.EP_I" );
+linkPorts("ACCable.EP_O", "ACS.EP_I", "PORT2");
+// linkPortI( "ACCable.EP_O", "ACS.EP_I" );

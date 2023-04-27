@@ -20,6 +20,10 @@ class SimpleTest extends Element {
 	ElectricInputPort EP_I;
 	real Ireal = 500.;
 	real Iimag = 0.;
+	Complex Icomplex;
+	Complex Vcoplex;
+	Complex S;
+	real Phase;
 	real Pdes = 1000.; //kW
 	real PFdes = 0.95;
 	
@@ -36,15 +40,20 @@ class SimpleTest extends Element {
 	}
 	
 	Dependent dep_Power{
-		eq_rhs="EP_O.S.rRMS";
+		eq_rhs="S.getReal()";
 		eq_lhs="Pdes";
 		autoSetup=TRUE;
 	}
 	
 	Dependent dep_PF{
-		eq_rhs="cos(EP_O.S.phase)";
+		eq_rhs="cos(Phase)";
 		eq_lhs="PFdes";
 		autoSetup=TRUE;
+	}
+
+	void prePass () {
+		S = EP_I.S;
+		Phase = atan2(S.getReal(),S.getImag());
 	}
 }
 

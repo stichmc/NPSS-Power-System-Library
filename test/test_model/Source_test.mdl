@@ -25,7 +25,9 @@ Element Enode E1 {
   dep_Ireal.eq_rhs = "1";
 }
 
-linkPortI( "Src.EP_O", "E1.EP_I" );
+linkPorts("Src.EP_O", "E1.EP_I", "PORT1");
+//linkPortI( "Src.EP_O", "E1.EP_I" );
 
-string var[] = propagateEpsSolverListAndPowerTypes();
-solverSequence = var;
+solverSequence = {"Src","E1"};
+// string var[] = propagateEpsSolverListAndPowerTypes();
+// solverSequence = var;

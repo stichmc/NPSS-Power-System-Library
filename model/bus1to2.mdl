@@ -34,7 +34,7 @@ Element Generator Gen1 {
 
 Element Cable Cable1 {
 	R=4.3245e-6;
-	L=9.84e-5*length/4./60./2./PI;
+	L=9.84e-5*length/4./60./2./PI;	
 }
 
 Element Enode E1{
@@ -55,13 +55,13 @@ Element Cable Cable2b {
 
 Element Motor EM1 {
 	effDes=0.96;
-	SpecificPower=13.0;
+	SpecificPower=13.0; 
 	frequency = 400.;
 }
 
 Element Motor EM2 {
 	effDes=0.96;
-	SpecificPower=13.0;
+	SpecificPower=13.0; 
 	frequency = 400.;
 }
 
@@ -156,12 +156,18 @@ Element Shaft Turbine_Shaft {
 //-------------------------------------------------------------------------------------------------
 linkPorts( "Propulsor_Shaft.Sh1_I"  , "EM1.Sh_O"          	, "Shaft_Motor1" );
 linkPorts( "Propulsor_Shaft2.Sh1_I"  , "EM2.Sh_O"          	, "Shaft_Motor2" );
-linkPortI( "Gen1.EP_O", "Cable1.EP_I" );
-linkPortI( "Cable1.EP_O", "E1.EP_I" );
-linkPortI( "E1.EP_O1", "Cable2a.EP_I" );
-linkPortI( "E1.EP_O2", "Cable2b.EP_I" );
-linkPortI( "Cable2a.EP_O", "EM1.EP_I" );
-linkPortI( "Cable2b.EP_O", "EM2.EP_I" );
+linkPorts("Gen1.EP_O","Cable1.EP_I","Port1");
+// linkPortI( "Gen1.EP_O", "Cable1.EP_I" );
+linkPorts("Cable1.EP_O","E1.EP_I","Port1");
+// linkPortI( "Cable1.EP_O", "E1.EP_I" );
+linkPorts("E1.EP_O1","Cable2a.EP_I","Port2");
+// linkPortI( "E1.EP_O1", "Cable2a.EP_I" );
+linkPorts("E1.EP_O2","Cable2b.EP_I","Port3");
+// linkPortI( "E1.EP_O2", "Cable2b.EP_I" );
+linkPorts("Cable2a.EP_O","EM1.EP_I","Port4");
+// linkPortI( "Cable2a.EP_O", "EM1.EP_I" );
+linkPorts("Cable2b.EP_O","EM2.EP_I","Port5");
+// linkPortI( "Cable2b.EP_O", "EM2.EP_I" );
 propagateEpsSolverListAndPowerTypes();
 
 linkPorts( "Atm.Fl_O"               , "Prop.Fl_I"           , "St0-St1");

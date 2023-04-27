@@ -17,7 +17,11 @@
 SimpleTest PowerSource {
 	ind_Iimag.autoSetup = FALSE;
   Pdes = 100;
-	void calculate(){EP_O.setIVRMS( Ireal, 0., 1000., 0.);}
+	void calculate(){
+      Icomplex.set(Ireal,Iimag);
+      Vcomplex.set(1000,cmplx_zero);
+      EP_O.setIVRMS(Icomplex, Vcomplex);
+    }
 }
 
 Element Inverter Inv {
@@ -31,7 +35,9 @@ Element Inverter Inv {
 PowerSource.EP_O.setOption("ElectricPowerType","DC");
 PowerSource.EP_I.setOption("ElectricPowerType","AC3");
 
-linkPortI( "PowerSource.EP_O", "Inv.EP_I" );
-linkPortI( "Inv.EP_O", "PowerSource.EP_I" );
+linkPorts("PowerSource.EP_O", "Inv.EP_I", "PORT1");
+// linkPortI( "PowerSource.EP_O", "Inv.EP_I" );
+linkPorts("Inv.EP_O", "PowerSource.EP_I", "PORT2");
+// linkPortI( "Inv.EP_O", "PowerSource.EP_I" );
 
-solverSequence = { "PowerSource", "Inv"};
+solverSequence = {"PowerSource", "Inv"};
