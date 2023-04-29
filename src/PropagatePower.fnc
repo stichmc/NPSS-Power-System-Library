@@ -16,9 +16,11 @@
 #define __PROPAGATE_POWER__
 
 // depth-first traversal of circuit graph to populate component port power type
-void propagatePower() {
+void propagatePower(string portTest) {
   string powerType = ElectricPowerType;
   string port = refport->getPathName();
+  cout << port << endl;
+  cout << portTest << endl;
   string portComponent = port->parent.isA();
   // Start off by putting this first component in the list.
   if (!powerComponentListSourceToLoad.contains(parent.parent.getPathName())) {
