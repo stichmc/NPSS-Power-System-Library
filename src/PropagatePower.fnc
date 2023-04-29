@@ -19,8 +19,10 @@
 void propagatePower(string portTest) {
   string powerType = ElectricPowerType;
   string port = refport->getPathName();
+  cout << "swerty" << endl;
   cout << port << endl;
   cout << portTest << endl;
+  quit();
   string portComponent = port->parent.isA();
   // Start off by putting this first component in the list.
   if (!powerComponentListSourceToLoad.contains(parent.parent.getPathName())) {
