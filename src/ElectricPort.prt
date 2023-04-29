@@ -268,7 +268,7 @@ string[] propagateEpsSolverListAndPowerTypes() {
       if (ports[i]->ElectricPowerType != "UNDEF") {
         //Calls recursive function scanDesign populates the EnodesInDesign 2d array with all the component inputs for the Enodes
         ports[i]->scanDesign();
-        ports[i]->propagatePower();
+        ports[i]->propagatePower(ports[i]);
       }
       else {
         cerr << "\n[ERROR]: " << ports[i]->parent.getPathName()
