@@ -17,6 +17,7 @@
 
 // depth-first traversal of circuit graph to populate component port power type
 void propagatePower(string portTest) {
+  portTest = portTest->parent.getPathName();
   string powerType = ElectricPowerType;
   string port = refport->getPathName();
   cout << "swerty" << endl;
