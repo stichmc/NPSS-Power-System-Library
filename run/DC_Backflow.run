@@ -46,7 +46,9 @@ autoSolverSetup();
 
 solver.maxIterations=500;
 solver.maxJacobians=500;
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
 
 run(); 
 CASE++;

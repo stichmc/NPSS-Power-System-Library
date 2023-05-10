@@ -368,7 +368,7 @@ current information is updated in the cable's input and output ports.";
     Complex voltage_drop;
     Complex voltage;
     Complex current;
-    voltage.copy("EP_I.VLN");
+    voltage = EP_I.VLN;
     
     if (frequency == 400) {
       row = 0;
@@ -387,8 +387,8 @@ current information is updated in the cable's input and output ports.";
           if (optimal_wire < 0) {
             params_test = 1;
             Mass = 0;
-            impedance.setrj(0, 0);
-            voltage_drop.setrj(0, 0);
+            impedance.set(0, 0);
+            voltage_drop.set(0, 0);
             ampacity = 0;
             cable_size = "";
             cerr << "\n[ERROR]: No cables were found for these settings" 
@@ -411,7 +411,7 @@ current information is updated in the cable's input and output ports.";
 
           resistance = cable_resistivities[row][index]; // [ohms/m]
           reactance = (frequency/60) * cable_reactances[index]; // [ohms/m]
-          impedance.setrj(resistance, reactance);
+          impedance.set(resistance, reactance);
           impedance.setMagPhase(impedance.mag * length / conductors, impedance.phase); // [ohms]
           current = EP_I.I;
           
@@ -452,7 +452,7 @@ current information is updated in the cable's input and output ports.";
       reactance = (frequency/60) * cable_reactances[optimal_wire]; // [ohms/m]
       
       // Bundled impedance
-      impedance.setrj(resistance, reactance);
+      impedance.set(resistance, reactance);
       impedance.setMagPhase(impedance.mag * length / paralleled, impedance.phase); // [ohms]
       voltage_drop.copy("current");
       voltage_drop.times("impedance");
@@ -613,14 +613,26 @@ current information is updated in the cable's input and output ports.";
       Vo.ln2ll();
     } // If not AC3, then we do not need to convert, because VLL = VLN
     
+    Complex EP_I_I; 
+    EP_Input_I = EP_I.I;
+    Complex Icomplex;
+	  Complex Vcomplex;
+
     // set the conditions in the port
     EP_O.frequency = EP_I.frequency;
-    EP_O.setIVRMS(EP_I.I.r, EP_I.I.j, Vo.r, Vo.j);
+    Icomplex.set(EP_Input_I.getReal(),EP_Input_I.getImag());
+    Vcomplex.set(Vo.getReal(),Vo.getImag());
+    EP_O.setIVRMS(Icomplex, Vcomplex);
     
-    Loss_r = EP_I.S.r - EP_O.S.r;
-    Loss_j = EP_I.S.j - EP_O.S.j;
+    Complex EP_Input_S;
+    EP_Input_S = EP_I.S;
+    Complex EP_Output_S;
+    EP_Output_S = EP_O.S;
+
+    Loss_r = EP_Input_S.getReal() - EP_Output_S.getReal();
+    Loss_j = EP_Input_S.getImag() - EP_Output_S.getImag();
     
-    eff = (EP_O.S.r / EP_I.S.r)**sign(EP_I.S.r);	
+    eff = (EP_Output_S.getReal() / EP_Input_S.getReal())**sign(EP_Input_S.getReal());	
 
       real KW_PER_BTU_PER_SEC = 1.05505585;
       Q_heat = sqrt(Loss_r**2 + Loss_j**2);

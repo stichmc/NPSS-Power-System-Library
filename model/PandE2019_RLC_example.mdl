@@ -70,4 +70,4 @@ linkPorts("C2.EP_O", "ACS.EP_I1", "PORT6");
 linkPorts("R1.EP_I", "n1.EP_O2", "NODE7");
 linkPorts("R1.EP_O", "ACS.EP_I2", "PORT8");
 
-setOption("ElectricPowerType", "AC");
+setOption("ElectricPowerType", "AC3");

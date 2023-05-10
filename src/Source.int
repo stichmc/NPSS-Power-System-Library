@@ -345,7 +345,17 @@ this component, see MotorGeneratorMap.int";
     
     // Set output port power variables
     EP_O.frequency = frequency;
-    EP_O.setIVRMS(Ireal, Iimag, Vo.r, Vo.j);
+    Complex Ireal_complex;
+    Complex Iimag_comples;
+
+    Complex Icomplex;
+    Complex Vcomplex;
+    Icomplex.set(Ireal_complex,Iimag_complex);
+    Vcomplex.set(Vo.getReal(),Vo.getImag());
+
+    // Populate data in output port
+    EP_O.setIVRMS(Icomplex, Vcomplex);
+    //EP_O.setIVRMS(Ireal, Iimag, Vo.r, Vo.j);
     
     /** 
      * If we're on-design, we need to figure out the output impedance based

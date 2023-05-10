@@ -188,24 +188,35 @@ no sizing logic included in this component, other than the mass calculations des
     
     // get frequency from input port
     frequency = EP_I.frequency;
-
-    dV = I * Z
     
-    Vo_ln = Vi_ln - dV_ln
+    Z.set(R,L*(2*PI*frequency));
+    dV = EP_I.I * Z;
+    Vo = EP_I.VLN - dv;
 
     if ((EP_I.ElectricPowerType == "AC3") && (EP_O.ElectricPowerType == "AC3")) {
       // Convert this VLN we have calculated into a VLL (port expects VLL inputs)
       Vo.ln2ll();
     } // If not AC3, then we do not need to convert, because VLL = VLN
 
+    cmplx_temp = EP_I.I;
+    Complex Icomplex;
+	  Complex Vcomplex;
+
     // set the conditions in the port
     EP_O.frequency = EP_I.frequency;
-    EP_O.setIVRMS(EP_I.I.r, EP_I.I.j, Vo.r, Vo.j);
+    Icomplex.set(cmplx_temp.getReal(),cmplx_temp.getImag());
+    Vcomplex.set(Vo.getReal(),Vo.getImag());
+    EP_O.setIVRMS(Icomplex, Vcomplex);
 
-    Loss_r = EP_I.S.r - EP_O.S.r;
-    Loss_j = EP_I.S.j - EP_O.S.j;
+    Complex EP_Input_S;
+    EP_Input_S = EP_I.S;
+    Complex EP_Output_S;
+    EP_Output_S = EP_O.S;
 
-      real KW_PER_BTU_PER_SEC = 1.05505585;
+    Loss_r = EP_Input_S.getReal() - EP_Output_S.getReal();
+    Loss_j = EP_Input_S.getImag() - EP_Output_S.getImag();
+
+    real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = sqrt(Loss_r*Loss_r + Loss_j*Loss_j);
     Q_heat /= KW_PER_BTU_PER_SEC;
     
@@ -216,7 +227,7 @@ no sizing logic included in this component, other than the mass calculations des
       }
     }
 
-    eff = (EP_O.S.r / EP_I.S.r)**sign(EP_I.S.r);	
+    eff = (EP_Output_S.getReal() / EP_Input_S.getReal())**sign(EP_Input_S.getReal());	
 
     if (switchDes == "DESIGN") {
       Mass = EP_I.I.mag / SpecificAmperage * length * 3; // calculate the mass of the cable

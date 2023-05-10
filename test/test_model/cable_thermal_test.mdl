@@ -25,9 +25,12 @@ SimpleTest ACS{
 	EP_O.frequency = defaultFrequency;
 	EP_I.frequency = defaultFrequency;
 	void calculate(){
+		Icomplex.set(Ireal,Iimag);
+		Vcomplex.set(1000,cmplx_zero);
 		//EP_O.setIVRMS( 0, 0., 15., 8.66025403784438); // This is the VLL representation of VLN = 10+j0
-		EP_O.setIVRMS( Ireal, Iimag, 1000., 0.);
-		//EP_I.setIVRMS( 0, 0., Vreal, Vimag );
+		EP_O.setIVRMS(Icomplex, Vcomplex);
+		//EP_O.setIVRMS(Ireal,Iimag, 1000., 0.);
+		//EP_I.setIVRMS( 0, 0., Ireal, Iimag );
 	}
 }
 Element AeroCable ACCable {

@@ -49,7 +49,7 @@ solver.diagnosticFile = "output/Solver.bad";
 
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
-setOption( "ElectricPowerType", "AC1" );
+setOption( "ElectricPowerType", "AC3" );
 
 run();
 

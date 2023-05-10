@@ -21,7 +21,7 @@ class SimpleTest extends Element {
 	real Ireal = 500.;
 	real Iimag = 0.;
 	Complex Icomplex;
-	Complex Vcoplex;
+	Complex Vcomplex;
 	Complex S;
 	real Phase;
 	real Pdes = 1000.; //kW

@@ -24,9 +24,15 @@ class SimpleSource extends Element {
 real defaultFrequency = 60.;
 
 SimpleSource Source {
-  void postexecute() {;
-    EP_Oa.setIVRMS(polar_c(0, 0), polar_c(208, 0));
-    EP_Ia.setIVRMS(polar_c(0, 0), polar_c(0, 0));
+  void postexecute() {
+    Complex Icomplex;
+    Icomplex = polar_c(0, 0);
+    Complex Vcomplex;
+    Vcomplex = polar_c(208, 0);
+    EP_Oa.setIVRMS(Icomplex, Vcomplex);
+    Icomplex = polar_c(0, 0);
+    Vcomplex = polar_c(0, 0);
+    EP_Ia.setIVRMS(Icomplex, Vcomplex);
   }
 }
 

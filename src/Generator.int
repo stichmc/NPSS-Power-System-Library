@@ -291,18 +291,18 @@ this component, see MotorGeneratorMap.int";
 
     Complex Icomplex;
 	  Complex Vcomplex;
-
-    cmplx_temp = EP_I.I;
-    EP_I.frequency = frequency;
-    Icomplex.set(cmplx_temp.getReal(),cmplx_temp.getImag());
-    Vcomplex.set(Vreal,Vimag);
-    EP_I.setIVRMS(Icomplex, Vcomplex); 
+    Icomplex.set(Ireal,Iimag);
+    Vcomplex.set(Vo.getReal(),Vo.getImag());
+    EP_O.setIVRMS(Icomplex, Vcomplex); 
 
     //EP_O.setIVRMS(Ireal, Iimag, Vo.r, Vo.j);
+    
+    cmplx_temp = EP_O.S;
 
     real powerfactor = EP_O.PF;
     Speed = Sh_O.Nmech;
-    Pout = EP_O.S.r;
+    Pout = cmplx_temp.getReal();
+    // Pout = EP_O.S.r;
     Current = EP_O.I.mag;
 
     if (switchDes == "DESIGN") {

@@ -13,6 +13,7 @@
  |                                                                             |
  -------------------------------------------------------------------------------
 ***/
+#include "ElectricPort.prt"
 
 real defaultFrequency = 400.;
 
@@ -158,15 +159,15 @@ linkPorts( "Propulsor_Shaft.Sh1_I"  , "EM1.Sh_O"          	, "Shaft_Motor1" );
 linkPorts( "Propulsor_Shaft2.Sh1_I"  , "EM2.Sh_O"          	, "Shaft_Motor2" );
 linkPorts("Gen1.EP_O","Cable1.EP_I","Port1");
 // linkPortI( "Gen1.EP_O", "Cable1.EP_I" );
-linkPorts("Cable1.EP_O","E1.EP_I","Port1");
+linkPorts("Cable1.EP_O","E1.EP_I","Port2");
 // linkPortI( "Cable1.EP_O", "E1.EP_I" );
-linkPorts("E1.EP_O1","Cable2a.EP_I","Port2");
+linkPorts("E1.EP_O1","Cable2a.EP_I","Port3");
 // linkPortI( "E1.EP_O1", "Cable2a.EP_I" );
-linkPorts("E1.EP_O2","Cable2b.EP_I","Port3");
+linkPorts("E1.EP_O2","Cable2b.EP_I","Port4");
 // linkPortI( "E1.EP_O2", "Cable2b.EP_I" );
-linkPorts("Cable2a.EP_O","EM1.EP_I","Port4");
+linkPorts("Cable2a.EP_O","EM1.EP_I","Port5");
 // linkPortI( "Cable2a.EP_O", "EM1.EP_I" );
-linkPorts("Cable2b.EP_O","EM2.EP_I","Port5");
+linkPorts("Cable2b.EP_O","EM2.EP_I","Port6");
 // linkPortI( "Cable2b.EP_O", "EM2.EP_I" );
 propagateEpsSolverListAndPowerTypes();
 

@@ -75,8 +75,9 @@ setOption("switchDes", "DESIGN");
 autoSolverSetup();
 
 cout << "--- On Design ---" << endl;
-cout << solverSequence << endl;
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
 
 cout << "CASE #" << CASE++ << endl;
 run();
@@ -114,7 +115,9 @@ ACS.ind_Ireal.autoSetup = FALSE;
 ACS.dep_Power.autoSetup = FALSE;
 autoSolverSetup();
 cout << solverSequence << endl;
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
 
 // Run off-design, same inputs
 cout << "CASE #" << CASE++ << endl;

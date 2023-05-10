@@ -81,8 +81,9 @@ Turb.S_map {
 
 createMapDataFiles();
 
-//cout << solverSequence << endl;
-//cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
 run();
 
 saveOpPoints("DES");
@@ -105,7 +106,10 @@ cout << "Turbine PR " << Turb.PR << " Nozzle Thrust " << Noz.Fg << endl;
 cout << endl;
 
 
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
+
 page.display();  // output data to out file
 
 //page_runtime.display(); // output data to cmd window
@@ -163,4 +167,6 @@ for (CASE = 1 ; CASE < 12; CASE++)
 }
 
 //page_runtime.display(); // output data to cmd window
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;

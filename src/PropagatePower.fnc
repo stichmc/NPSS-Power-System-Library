@@ -132,7 +132,7 @@ void scanDesign() {
         int sizeEnodes = EnodesInDesign.entries();
         for (i = 0; i < sizeEnodes; i++) {
           string current[] = EnodesInDesign[i];
-          if(current.contains(trimmedEnode)){
+          if(current.contains(trimmedEnode)) {
             if(!(current.contains(trimmedPort))) {
               current.append(trimmedPort);
               EnodesInDesign[i] = current;

@@ -166,13 +166,13 @@ approach taken in fluid networks within NPSS rocket models.";
         
     // sum up the current components at node
     // solver will drive to zero
-    Inet.setrj( 0., 0. );
+    Inet.set( 0., 0. );
 
     int i;
     string Iname;
     for (i = 0; i < ElectricInputPorts.entries(); i++) {
       Iname = ElectricInputPorts[i] + ".I"; 
-      Inet.plus(Iname);			    
+      Inet.plus(Iname); //What?			    
       }
 
     for (i = 0; i < ElectricOutputPorts.entries(); i++) {
@@ -211,12 +211,25 @@ approach taken in fluid networks within NPSS rocket models.";
       
       if (ElectricPowerType == "DC") {
         real Ireal = PortIndepCurrents[i]->value;
-        ElectricOutputPorts[i]->setIVRMS(Ireal, 0., Vreal, Vimag);
+        Complex Icomplex;
+        Complex Vcomplex;
+        Icomplex.set(Ireal,0);
+        Vcomplex.set(Vreal,Vimag);
+
+        ElectricOutputPorts[i]->setIVRMS(Icomplex, Vcomplex);
+        //ElectricOutputPorts[i]->setIVRMS(Ireal, 0., Vreal, Vimag);
       }
       else {
         real Ireal = PortIndepCurrents[i*2]->value;
         real Iimag = PortIndepCurrents[i*2 + 1]->value;
-        ElectricOutputPorts[i]->setIVRMS(Ireal, Iimag, Vreal, Vimag);
+        
+        Complex Icomplex;
+        Complex Vcomplex;
+        Icomplex.set(Ireal,Iimag);
+        Vcomplex.set(Vreal,Vimag);
+
+        ElectricOutputPorts[i]->setIVRMS(Icomplex, Vcomplex);
+        //ElectricOutputPorts[i]->setIVRMS(Ireal, Iimag, Vreal, Vimag);
       }
     }
   }

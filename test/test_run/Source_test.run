@@ -35,9 +35,9 @@ MODELNAME = "Source Test";
 setOption("switchDes","DESIGN");
 autoSolverSetup();
 
-cout << "Solver Sequence: " << endl << solverSequence << endl;
-cout << "Dependents:" << endl << solver.dependentNames << endl << 
-"Independents:" << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
 
 run();
 cout << "Source Efficiency After Run: " << ( Src.EP_O.S.r / (Src.EP_O.S.r / Src.eff**sign(Src.EP_O.S.r))) << endl;

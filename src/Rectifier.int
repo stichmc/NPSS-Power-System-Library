@@ -178,13 +178,13 @@ component to the surrounding environment. For more information, see EThermalMass
 
   ElectricInputPort EP_I {
     description = "Electric input port.";
-    ElectricPowerType.allowedValues = { "AC3" };
+    //ElectricPowerType.allowedValues = { "AC3" };
     setOption("ElectricPowerType", "AC3"); // only AC3 output allowed
   }
 
   ElectricOutputPort EP_O {
     description = "Electric output port.";
-    ElectricPowerType.allowedValues = { "DC" };
+    //ElectricPowerType.allowedValues = { "DC" };
     setOption("ElectricPowerType", "DC"); // only DC output allowed
   }
 
@@ -274,11 +274,29 @@ component to the surrounding environment. For more information, see EThermalMass
     // Output DC current (w/ losses)
     real Io = 1000.*pwrOut / Vo;
 
-    // Populate data in output port
-    EP_O.setIVRMS(Io, 0., Vo, 0.);
+    Complex Io_complex;
+    Complex Vo_complex;
+    Io_complex = Io;
+    Vo_complex = Vo;
     
-    Loss_r = EP_I.S.r - EP_O.S.r;
-    Loss_j = EP_I.S.j - EP_O.S.j;
+    Complex Icomplex;
+    Complex Vcomplex;
+    Icomplex.set(Io_complex,0);
+    Vcomplex.set(Vo,0);
+    // Populate data in output port
+    EP_O.setIVRMS(Icomplex, Vcomplex);
+    //EP_O.setIVRMS(Io, 0., Vo, 0.);
+    
+    Complex EP_I_S;
+    Complex EP_O_S;
+    EP_I_S = EP_I.S;
+    EP_O_S = EP_O.S;
+
+    Loss_r = EP_I_S.getReal() - EP_O_S.getReal();
+    Loss_j = EP_I_S.getImag() - EP_O_S.getImag();
+
+    // Loss_r = EP_I.S.r - EP_O.S.r;
+    // Loss_j = EP_I.S.j - EP_O.S.j;
 
     real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = sqrt(Loss_r**2 + Loss_j**2);

@@ -17,7 +17,7 @@
 #define THERMO GasTbl
 setThermoPackage("$THERMO");
 
-ElectricAssembly allElectric {
+allElectric {
   Source Source {
     setOption("ElectricPowerType", "DC");
     Vrms  = 1000; // [volts]

@@ -164,13 +164,13 @@ component to the surrounding environment. For more information, see EThermalMass
 
   ElectricInputPort EP_I {
     description = "Electric input port.";
-    ElectricPowerType.allowedValues = { "DC" };
+    //ElectricPowerType.allowedValues = { "DC" };
     setOption("ElectricPowerType", "DC"); // only DC input allowed
   }
 
   ElectricOutputPort EP_O {
     description = "Electric output port.";
-    ElectricPowerType.allowedValues = { "DC" };
+    //ElectricPowerType.allowedValues = { "DC" };
     setOption("ElectricPowerType", "DC"); // only DC output allowed
   }
 
@@ -236,11 +236,25 @@ component to the surrounding environment. For more information, see EThermalMass
     pwrOut = pwrIn * eff**sign(pwrIn);
 
     // Update output port power variables.
-    real Vo = EP_I.I.r * K;
+    Complex EP_I_I;
+    EP_I_I = EP_I.I;
+    real Vo = EP_I_I.getReal() * K;
     real Io = 1000.*pwrOut / Vo;
-    EP_O.setIVRMS(Io, 0, Vo, 0);
+    Complex Icomplex;
+	  Complex Vcomplex;
 
-    Loss_r = EP_I.S.r - EP_O.S.r;
+    Icomplex.set(Io,0);
+    Vcomplex.set(Vo,0);
+    EP_O.setIVRMS(Icomplex, Vcomplex);
+
+    // EP_O.setIVRMS(Io, 0, Vo, 0);
+
+    Complex EP_I_S;
+    Complex EP_O_S;
+    EP_I_S = EP_I.S;
+    EP_O_S = EP_O.S;
+
+    Loss_r = EP_I_S.getReal() - EP_O_S.getReal();
 
     real KW_PER_BTU_PER_SEC = 1.05505585;
     Q_heat = Loss_r / KW_PER_BTU_PER_SEC;

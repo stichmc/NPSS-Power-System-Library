@@ -82,4 +82,6 @@ cout<< " Power A1 (out): " << A1.EP_O.S.mag << " /_  " << A1.EP_O.S.phaseDeg << 
 cout<< " Power A2 (out): " << A2.EP_O.S.mag << " /_  " << A2.EP_O.S.phaseDeg << "\n" << endl;
 cout<<" =============================================== \n" << endl;
 
-cout << endl << solver.dependentNames << endl << solver.independentNames << endl;
+cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
+cout << "Dependents:" << endl << solver.dependentNames << endl;
+cout << "Independents:" << endl << solver.independentNames << endl;
