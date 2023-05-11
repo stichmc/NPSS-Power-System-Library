@@ -33,8 +33,8 @@ increased power to see how variables change
 // #include "InterpretedPort.int"
 
 //include viewers
-// #include "npssel.view"
-// #include "npssel_runtime.view"
+#include "npssel.view"
+#include "npssel_runtime.view"
 
 MODELNAME = "Breaker Test";
 
@@ -43,10 +43,14 @@ MODELNAME = "Breaker Test";
 #include "test_utils/TestingUtils.fnc"
 solver.maxIterations = 5000;
 solver.maxJacobians = 1000;
-solverSequence = { "ACS", "ACBreaker" };
+solverSequence = {  "ACS", "ACBreaker","DCS", "DCBreaker" };
 setOption("switchDes","DESIGN");
 					
 autoSolverSetup();
+solver.removeDependent( "ACS.dep_Power" );
+solver.removeDependent( "ACS.dep_PF" );
+solver.removeIndependent( "ACS.ind_Ireal" );
+solver.removeIndependent( "ACS.ind_Iimag" );
 
 cout << "--- On Design ---" << endl;
 cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
@@ -54,16 +58,16 @@ cout << "Dependents:" << endl << solver.dependentNames << endl;
 cout << "Independents:" << endl << solver.independentNames << endl;
 
 // Initial guesses
-ACBreaker.Ireal = 1100;
-ACBreaker.Iimag = 0;
-// DCBreaker.Ireal = 1100;
-// DCBreaker.Iimag = 0;
+ACS.Ireal = 1100.;
+ACS.Iimag = 0.;
+DCS.Ireal = 1100.;
+DCS.Iimag = 0.;
+
 real errTol = 0.000001;
-//solver.solutionMode = "ONE_PASS";
-run();
+solver.solutionMode = "ONE_PASS";
 run();
 printOutput();
-//page.display();
+page.display();
 
 // Set up complex numbers and mag calculations
 Complex ACBreaker_EP_I_S;
@@ -101,39 +105,39 @@ real imagCurrentDifference = (ACBreaker_EP_I_I.getImag() - ACBreaker_EP_O_I.getI
 testCurrentDifference("ACBreaker",errTol,realCurrentDifference,imagCurrentDifference);
 
 // Set up complex numbers and mag calculations
-// Complex DCBreaker_EP_I_S;
-// DCBreaker_EP_I_S = DCBreaker.EP_I.S;
+Complex DCBreaker_EP_I_S;
+DCBreaker_EP_I_S = DCBreaker.EP_I.S;
 
-// Complex DCBreaker_EP_I_I;
-// DCBreaker_EP_I_I = DCBreaker.EP_I.I;
-// real DCBreaker_EP_I_I_mag = sqrt((DCBreaker_EP_I_I.getReal()**2) + (DCBreaker_EP_I_I.getImag()**2));
+Complex DCBreaker_EP_I_I;
+DCBreaker_EP_I_I = DCBreaker.EP_I.I;
+real DCBreaker_EP_I_I_mag = sqrt((DCBreaker_EP_I_I.getReal()**2) + (DCBreaker_EP_I_I.getImag()**2));
 
-// Complex DCBreaker_EP_O_I;
-// DCBreaker_EP_O_I = DCBreaker.EP_O.I;
+Complex DCBreaker_EP_O_I;
+DCBreaker_EP_O_I = DCBreaker.EP_O.I;
 
-// Complex DCBreaker_Z;
-// DCBreaker_Z = DCBreaker.Z;
-// real DCBreaker_Z_mag = sqrt((DCBreaker_Z.getReal()**2) + (DCBreaker_Z.getImag()**2));
+Complex DCBreaker_Z;
+DCBreaker_Z = DCBreaker.Z;
+real DCBreaker_Z_mag = sqrt((DCBreaker_Z.getReal()**2) + (DCBreaker_Z.getImag()**2));
 
-// Complex DCBreaker_dV;
-// DCBreaker_dV = DCBreaker.dV;
+Complex DCBreaker_dV;
+DCBreaker_dV = DCBreaker.dV;
 
-// Complex DCBreaker_EP_I_VLN;
-// DCBreaker_EP_I_VLN = DCBreaker.EP_I.VLN;
+Complex DCBreaker_EP_I_VLN;
+DCBreaker_EP_I_VLN = DCBreaker.EP_I.VLN;
 
-// Complex DCBreaker_EP_O_VLN;
-// DCBreaker_EP_O_VLN = DCBreaker.EP_O.VLN;
+Complex DCBreaker_EP_O_VLN;
+DCBreaker_EP_O_VLN = DCBreaker.EP_O.VLN;
 
-// // DCBreaker Tests
-// effCalc = ((DCBreaker_EP_I_S.getReal() - DCBreaker_EP_I_I_mag**2* DCBreaker_Z_mag)/ DCBreaker_EP_I_S.getReal());
-// testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
+// DCBreaker Tests
+effCalc = ((DCBreaker_EP_I_S.getReal() - DCBreaker_EP_I_I_mag**2* DCBreaker_Z_mag)/ DCBreaker_EP_I_S.getReal());
+testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
 
-// measCalc = (DCBreaker_EP_I_VLN.getReal() - (DCBreaker_EP_O_VLN.getReal()));
-// testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker_dV.getReal(),measCalc);
+measCalc = (DCBreaker_EP_I_VLN.getReal() - (DCBreaker_EP_O_VLN.getReal()));
+testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker_dV.getReal(),measCalc);
 
-// realCurrentDifference = (DCBreaker_EP_I_I.getReal() - DCBreaker_EP_O_I.getReal());
-// imagCurrentDifference = (DCBreaker_EP_I_I.getImag() - DCBreaker_EP_O_I.getImag());
-// testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);
+realCurrentDifference = (DCBreaker_EP_I_I.getReal() - DCBreaker_EP_O_I.getReal());
+imagCurrentDifference = (DCBreaker_EP_I_I.getImag() - DCBreaker_EP_O_I.getImag());
+testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);
 
 
 cout << "--- Off Design ---" << endl;
@@ -143,8 +147,8 @@ ACS.ind_Iimag.autoSetup = FALSE;
 ACS.dep_PF.autoSetup    = FALSE;
 ACS.ind_Ireal.autoSetup = FALSE;
 ACS.dep_Power.autoSetup = FALSE;
-//DCS.ind_Ireal.autoSetup = FALSE;
-//DCS.dep_Power.autoSetup = FALSE;
+DCS.ind_Ireal.autoSetup = FALSE;
+DCS.dep_Power.autoSetup = FALSE;
 autoSolverSetup();
 cout << endl << "Solver Sequence:" << endl << solverSequence << endl;
 cout << "Dependents:" << endl << solver.dependentNames << endl;
@@ -165,13 +169,13 @@ realCurrentDifference = (ACBreaker_EP_I_I.getReal() - ACBreaker_EP_O_I.getReal()
 imagCurrentDifference = (ACBreaker_EP_I_I.getImag() - ACBreaker_EP_O_I.getImag());
 testCurrentDifference("ACBreaker",errTol,realCurrentDifference,imagCurrentDifference);
 
-// // DCBreaker Tests
-// effCalc = ((DCBreaker_EP_I_S.getReal() - DCBreaker_EP_I_I_mag**2* DCBreaker_Z_mag)/ DCBreaker_EP_I_S.getReal());
-// testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
+// DCBreaker Tests
+effCalc = ((DCBreaker_EP_I_S.getReal() - DCBreaker_EP_I_I_mag**2* DCBreaker_Z_mag)/ DCBreaker_EP_I_S.getReal());
+testParameterDifference("DCBreaker","Efficiency",errTol,DCBreaker.eff,effCalc);
 
-// measCalc = (DCBreaker_EP_I_VLN.getReal() - (DCBreaker_EP_O_VLN.getReal()));
-// testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker_dV.getReal(),measCalc);
+measCalc = (DCBreaker_EP_I_VLN.getReal() - (DCBreaker_EP_O_VLN.getReal()));
+testParameterDifference("DCBreaker","dV_meas",errTol,DCBreaker_dV.getReal(),measCalc);
 
-// realCurrentDifference = (DCBreaker_EP_I_I.getReal() - DCBreaker_EP_O_I.getReal());
-// imagCurrentDifference = (DCBreaker_EP_I_I.getImag() - DCBreaker_EP_O_I.getImag());
-// testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);
+realCurrentDifference = (DCBreaker_EP_I_I.getReal() - DCBreaker_EP_O_I.getReal());
+imagCurrentDifference = (DCBreaker_EP_I_I.getImag() - DCBreaker_EP_O_I.getImag());
+testCurrentDifference("DCBreaker",errTol,realCurrentDifference,imagCurrentDifference);

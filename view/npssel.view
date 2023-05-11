@@ -12,6 +12,8 @@
  -------------------------------------------------------------------------------
 ***/
 
+#include "ElectricPort.prt"
+
 OutFileStream pageStream { filename = "output/powertrain.viewOut"; }
 
 // A couple of functions to do rounding

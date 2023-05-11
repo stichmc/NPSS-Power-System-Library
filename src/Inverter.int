@@ -279,7 +279,10 @@ component to the surrounding environment. For more information, see EThermalMass
 
     if (EP_O.ElectricPowerType == "AC3") {
       // Convert this VLN we have calculated into a VLL (port expects VLL inputs)
-      Vo.ln2ll();
+      Complex magicNumber;
+      magicNumber.set(1.5, 0.866025403784438);
+      Vo = Vo*magicNumber;
+      //Vo.ln2ll();
     } // If not AC3, then we do not need to convert, because VLL = VLN
     
     // Send output quantities to next downstream component

@@ -51,7 +51,7 @@ class SimpleTest extends Element {
 		autoSetup=TRUE;
 	}
 
-	void prePass () {
+	void prePass() {
 		S = EP_I.S;
 		Phase = atan2(S.getReal(),S.getImag());
 	}
