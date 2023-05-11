@@ -8,7 +8,7 @@
 #|                modified, if the YAML isn't modified then the script       |
 #|                runs the various NPSS jobs                                 |
 #|                                                                           |
-#-----------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 name: YAML Scan & NPSS Runner
 
 on: [push,pull_request]
