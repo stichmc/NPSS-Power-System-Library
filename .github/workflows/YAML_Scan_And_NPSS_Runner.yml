@@ -1,17 +1,43 @@
 #-----------------------------------------------------------------------------
 #|                                                                           |
-#| File Name:     NPSS_Tests.yml                                             |
+#| File Name:     YAML_Scan_And_NPSS_Runner.yml                              |
 #| Author(s):     Michael Stich                                              |
-#| Date(s):       March 2023                                                 |
+#| Date(s):       April 2023                                                 |
 #|                                                                           |
-#| Description:   YAML script that connects to the NPSS shell server and     |
-#|                executes command arguments to test the proposed NPSS code  |
+#| Description:   YAML script that checks if the YAML file proposed is       |
+#|                modified, if the YAML isn't modified then the script       |
+#|                runs the various NPSS jobs                                 |
 #|                                                                           |
 #-----------------------------------------------------------------------------
-name: NPSS Tests
+name: YAML Scan & NPSS Runner
+
 on: [push,pull_request]
+
 jobs:
+  YAMLCheck:
+    name: YAML File Checker
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
+
+    - name: Compare .github Folders
+      id: compare
+      run: |
+        diff=$(git diff --name-only HEAD^ HEAD .github)
+        if [ -n "$diff" ]; then
+          echo "::error::The ./github/** directory was changed by ${GITHUB_ACTOR}. Aborting workflow because of the possibility of malicious intent."
+          exit 1
+        else
+          echo "No Files Were Modified in ./github/** Safe to Proceed With Runners"
+          exit 0
+        fi
   NPSS_Scan:
+    needs: YAMLCheck
     name: NPSS Error/Warning Scan
     runs-on: self-hosted
     steps:
@@ -27,13 +53,14 @@ jobs:
             Get-Content ..\..\..\..\currentOutput.txt;
             $dateTime = Get-Date; 
             $dateTimeString = $dateTime.ToString("yyyy-MM-dd_HH-mm-ss");
-            New-Item -ItemType File -Path "..\..\..\..\outputLogs\$dateTimeString.txt" | Out-Null;
-            Set-Content ..\..\..\..\outputLogs\$dateTimeString.txt $content;
+            New-Item -ItemType File -Path "..\..\..\..\errorOutputLogs\$dateTimeString.txt" | Out-Null;
+            Set-Content ..\..\..\..\errorOutputLogs\$dateTimeString.txt $content;
             Clear-Content ..\..\..\..\currentOutput.txt;
             exit 1
           }
 
   NPSS_Tester:
+    needs: YAMLCheck
     name: NPSS Unit Tester
     runs-on: self-hosted
     steps:
@@ -49,3 +76,13 @@ jobs:
             Clear-Content ..\..\..\..\currentOutput.txt;
             exit 1
           }
+
+  NPSS_Output:
+    needs: YAMLCheck
+    name: NPSS Run Console Output
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - run: >
+          Write-Host "The NPSS Code Pushed Produced The Following Console Output:";
+          cmd /c "..\..\..\..\setup-npss.bat && runnpss-psl.bat";
